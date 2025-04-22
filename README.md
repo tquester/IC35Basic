@@ -2,6 +2,8 @@
 A basic compiler for the Siemens IC35, the unifier 
 ![image](https://github.com/user-attachments/assets/723c16b6-44f5-486e-9fb3-a6aaea6d63a0)
 
+The newest version of the source code is still missing, however I could recover the SD card with the binaries, demos and Dokus. I still have a few hundredet CDs and a box of old hard disks left as well as a box full of tapes (but no tape drive) so there is some chance, this will be complete in the future.
+
 The Siemens IC35 (the unifier) was a pocket computer driven by Z80 with 240x160 Pixel black and white LC display, 2 MB memory using bank switching, two SD card slots, a smartcard slot, infrared interface and cable interface.
 
 The BASIC compiler compiles the BASIC source code into a pcode for a virtual CPU (one address stack machine) which then is executed. Most opcodes are using Z80 assembler on the machine but are implemented in C on the simulator.
