@@ -1,0 +1,44 @@
+
+#define   OP_FILLBLOCK				150
+#define   OP_FILLSCREEN				151
+#define   OP_INVERSEBLOCK			152
+#define   OP_VLINE					153
+#define   OP_HLINE					154
+#define   OP_RECTANGLE				155
+#define   OP_CURSORSTATUS			156
+#define   OP_CURSORSHAPE			157
+#define   OP_FONT					158
+#define   OP_SCROLLUP				159	
+#define   OP_SCROLLDN				160
+#define   OP_SCROLLLEFT				161	
+#define   OP_SCROLLRIGHT			162	
+#define   OP_RESTORELCD				163	
+#define   OP_BACKUPLCD				164
+#define   OP_RESTOREHELPLCD			165
+#define   OP_BACKUPHELPLCD			166
+#define   OP_SETINDION				167
+#define   OP_SETINDIOFF				168
+#define   OP_SETTONE				169
+#define   OP_MAKEWARNTONE			170
+#define   OP_SETPOWERMODE			171
+#define   OP_MASKSYMKEY				172
+#define   OP_MASKFNTKEY				173
+#define   OP_CLEARCHARBUF			174
+#define   OP_SETKEYTONE				175
+#define   OP_STRINGMENU				176
+#define   OP_VSCROLLBAR				177
+#define   OP_SHADOWEDGERECT			178
+#define   OP_STRINGDIALOGBOX		179
+#define   OP_STRINGPHONEMENU		180
+#define   OP_BUTTON					181
+#define   OP_CHECKBOX				182
+#define   OP_RADIOBUTTON			183
+#define   OP_LOADIMAGE				184
+#define   OP_PUTIMAGE				185
+#define   OP_ALLOCIMAGE				186
+#define   OP_GETIMAGE				186
+#define   OP_DELAY1MS				187
+#define   OP_DELAY250MS				188
+#define   OP_DELAY1S				189
+
+void InitAPITokens(BasicToken **tok, CompileToken **syn);

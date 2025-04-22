@@ -1,0 +1,93 @@
+#include "ic35sdk.h"
+#include "data.h"
+#include "compiler.h"
+#include "vm.h"
+#include "icmemory.h"
+#include "ui.h"
+#include "icstdio.h"
+#include "compapi.h"
+#include "vmapi.h"
+
+
+void InitAPITokens(BasicToken **tok, CompileToken **syn)
+{
+
+/*
+	InitToken(tok,"FILLBLOCK",OP_FILLBLOCK);
+	InitToken(tok,"FILLSCREEN",OP_FILLSCREEN);
+	InitToken(tok,"INVERSEBLOCK",OP_INVERSEBLOCK);
+	InitToken(tok,"VLINE",OP_VLINE);
+	InitToken(tok,"HLINE",OP_HLINE);
+	InitToken(tok,"RECTANGLE",OP_RECTANGLE);
+	InitToken(tok,"CURSORSTATUS",OP_CURSORSTATUS);
+	InitToken(tok,"CURSORSHAPE",OP_CURSORSHAPE);
+	InitToken(tok,"FONT",OP_FONT);
+	InitToken(tok,"SCROLLUP",OP_SCROLLUP);
+	InitToken(tok,"SCROLLDN",OP_SCROLLDN);
+	InitToken(tok,"SCROLLLEFT",OP_SCROLLLEFT);
+	InitToken(tok,"SCROLLRIGHT",OP_SCROLLRIGHT);
+	InitToken(tok,"RESTORELCD",OP_RESTORELCD);
+	InitToken(tok,"BACKUPLCD",OP_BACKUPLCD);
+	InitToken(tok,"RESTOREHELPLCD",OP_RESTOREHELPLCD);
+	InitToken(tok,"BACKUPHELPLCD",OP_BACKUPHELPLCD);
+	InitToken(tok,"SETINDION",OP_SETINDION);
+	InitToken(tok,"SETINDIOFF",OP_SETINDIOFF);
+	InitToken(tok,"SETTONE",OP_SETTONE);
+	InitToken(tok,"MAKEWARNTONE",OP_MAKEWARNTONE);
+	InitToken(tok,"SETPOWERMODE	",OP_SETPOWERMODE	);
+	InitToken(tok,"MASKSYMKEY",OP_MASKSYMKEY);
+	InitToken(tok,"MASKFNTKEY",OP_MASKFNTKEY);
+	InitToken(tok,"CLEARCHARBUF",OP_CLEARCHARBUF);
+	InitToken(tok,"SETKEYTONE",OP_SETKEYTONE);
+	InitToken(tok,"STRINGMENU",OP_STRINGMENU);
+	InitToken(tok,"VSCROLLBAR",OP_VSCROLLBAR);
+	InitToken(tok,"SHADOWEDGERECT",OP_SHADOWEDGERECT);
+	InitToken(tok,"STRINGDIALOGBOX",OP_STRINGDIALOGBOX);
+	InitToken(tok,"STRINGPHONEMENU",OP_STRINGPHONEMENU);
+	InitToken(tok,"BUTTON",OP_BUTTON);
+	InitToken(tok,"CHECKBOX",OP_CHECKBOX);
+	InitToken(tok,"RADIOBUTTON",OP_RADIOBUTTON);
+
+    InitSyntax(syn,OP_FILLBLOCK,		CMD_API, CMD_API_FILLBLOCK,			TYP_NULL, "biiii");
+	InitSyntax(syn,OP_FILLSCREEN,		CMD_API, CMD_API_FILLSCREEN,		TYP_NULL, "b");
+	InitSyntax(syn,OP_INVERSEBLOCK,		CMD_API, CMD_API_INVERSEBLOCK,		TYP_NULL, "iiii");
+	InitSyntax(syn,OP_VLINE,			CMD_API, CMD_API_VLINE,				TYP_NULL, "biiib");
+	InitSyntax(syn,OP_HLINE,			CMD_API, CMD_API_HLINE,				TYP_NULL, "biiib");
+	InitSyntax(syn,OP_RECTANGLE,		CMD_API, CMD_API_RECTANGLE,			TYP_NULL, "biiiib");
+	InitSyntax(syn,OP_CURSORSTATUS,		CMD_API, CMD_API_CURSORSTATUS,		TYP_NULL, "b");
+	InitSyntax(syn,OP_CURSORSHAPE,		CMD_API, CMD_API_CURSORSHAPE,		TYP_NULL, "ii");
+	InitSyntax(syn,OP_FONT,				CMD_API, CMD_API_FONT,				TYP_NULL, "b");
+	InitSyntax(syn,OP_SCROLLUP,			CMD_API, CMD_API_SCROLLUP,			TYP_NULL, "iiiiib");
+	InitSyntax(syn,OP_SCROLLDN,			CMD_API, CMD_API_SCROLLDN,			TYP_NULL, "iiiiib");
+	InitSyntax(syn,OP_SCROLLLEFT,		CMD_API, CMD_API_SCROLLLEFT,		TYP_NULL, "iiiiib");
+	InitSyntax(syn,OP_SCROLLRIGHT,		CMD_API, CMD_API_SCROLLRIGHT,		TYP_NULL, "iiiiib");
+	InitSyntax(syn,OP_RESTORELCD,		CMD_API, CMD_API_RESTORELCD,		TYP_NULL, "iiii");
+	InitSyntax(syn,OP_BACKUPLCD,		CMD_API, CMD_API_BACKUPLCD,			TYP_NULL, "iiii");
+	InitSyntax(syn,OP_RESTOREHELPLCD,	CMD_API, CMD_API_RESTOREHELPLCD,	TYP_NULL, "");
+	InitSyntax(syn,OP_BACKUPHELPLCD,	CMD_API, CMD_API_BACKUPHELPLCD,		TYP_NULL, "");
+	InitSyntax(syn,OP_SETINDION,		CMD_API, CMD_API_SETINDION,			TYP_NULL, "b");
+	InitSyntax(syn,OP_SETINDIOFF,		CMD_API, CMD_API_SETINDIOFF,		TYP_NULL, "b");
+	InitSyntax(syn,OP_SETTONE,			CMD_API, CMD_API_SETTONE,			TYP_NULL, "i");
+	InitSyntax(syn,OP_MAKEWARNTONE,		CMD_API, CMD_API_MAKEWARNTONE,		TYP_NULL, "");
+	InitSyntax(syn,OP_SETPOWERMODE,		CMD_API, CMD_API_SETPOWERMODE,		TYP_NULL, "b");
+	InitSyntax(syn,OP_MASKSYMKEY,		CMD_API, CMD_API_MASKSYMKEY,		TYP_NULL, "b");
+	InitSyntax(syn,OP_MASKFNTKEY,		CMD_API, CMD_API_MASKFNTKEY,		TYP_NULL, "b");
+	InitSyntax(syn,OP_CLEARCHARBUF,		CMD_API, CMD_API_CLEARCHARBUF,		TYP_NULL, "");
+	InitSyntax(syn,OP_SETKEYTONE,		CMD_API, CMD_API_SETKEYTONE,		TYP_NULL, "b");
+	InitSyntax(syn,OP_VSCROLLBAR,		CMD_API, CMD_API_VSCROLLBAR,		TYP_NULL, "iiiiii");
+	InitSyntax(syn,OP_SHADOWEDGERECT,	CMD_API, CMD_API_SHADOWEDGERECT,	TYP_NULL, "iiii");
+	InitSyntax(syn,OP_BUTTON,			CMD_API, CMD_API_BUTTON,			TYP_NULL, "siii");
+
+	InitSyntax(syn,0,0,0,TYP_NULL, NULL);
+	gFuncSyntax = *syn;
+
+
+	InitSyntax(syn,OP_STRINGMENU,		CMD_API, CMD_API_STRINGMENU,		TYP_16,		"si");
+	InitSyntax(syn,OP_STRINGDIALOGBOX,	CMD_API, CMD_API_STRINGDIALOGBOX,	TYP_16,		"si");
+	InitSyntax(syn,OP_STRINGPHONEMENU,	CMD_API, CMD_API_STRINGPHONEMENU,	TYP_16,		"si");
+	InitSyntax(syn,OP_CHECKBOX,			CMD_API, CMD_API_CHECKBOX,			TYP_STR_D,  "ssii");
+	InitSyntax(syn,OP_RADIOBUTTON,		CMD_API, CMD_API_RADIOBUTTON,		TYP_16,		"siii");
+*/
+
+}
+

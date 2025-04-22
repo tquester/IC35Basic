@@ -1,0 +1,6081 @@
+	symbols on
+;VER=v4.10b
+; 
+; typedef unsigned char	U8;
+; 
+; typedef unsigned int	U16;
+; 
+; typedef unsigned long	U32;
+; 
+; typedef signed char		S8;
+; 
+; typedef signed int   	S16;
+; 
+; typedef signed int		INT;
+; typedef signed long		S32;
+; 
+; typedef int				BOOL;
+; 
+; typedef void			VOID;
+; typedef void *			HANDLE;
+; typedef U16				SOCKET;
+; 
+; typedef U8				u_char;
+; typedef U8				BYTE;
+; typedef U16				u_short;
+; typedef U16				WORD;
+; typedef U16				u_int;
+; typedef U32				u_long;
+; typedef U32				DWORD;
+; 
+; typedef void (*TIMERISRFUNC)( );
+; typedef void (*SHUTDOWNISRFUNC)( );
+; typedef void (*PHONESTRINGFUNC)( );
+; 
+; typedef struct fd_set
+; {
+; u_int	fd_count;
+; SOCKET	fd_array[64];
+; }fd_set;
+; 
+; typedef struct timeval
+; {
+; long	tv_sec;
+; long	tv_usec;
+; }TIMEVAL;
+; 
+; typedef struct hostent
+; {
+; char  *			h_name;
+; char  *  *	h_aliases;
+; short				h_addrtype;
+; short				h_length;
+; char  *  *	h_addr_list;
+; 
+; }HOSTENT;
+; typedef struct hostent *PHOSTENT;
+; typedef struct hostent *LPHOSTENT;
+; 
+; struct netent
+; {
+; char  *			n_name;
+; char  *  *	n_aliases;
+; short				n_addrtype;
+; u_long				n_net;
+; };
+; 
+; typedef struct servent
+; {
+; char  *			s_name;
+; char  *  *	s_aliases;
+; short				s_port;
+; char  *			s_proto;
+; }SERVENT;
+; 
+; typedef struct protoent
+; {
+; char  *			p_name;
+; char  *  *	p_aliases;
+; short				p_proto;
+; }PROTOENT;
+; 
+; typedef struct in_addr
+; {
+; union{
+; struct{ u_char s_b1, s_b2, s_b3, s_b4; }S_un_b;
+; struct{ u_short s_w1, s_w2; }S_un_w;
+; u_long S_addr;
+; }S_un;
+; 
+; }IN_ADDR;
+; 
+; typedef struct sockaddr_in
+; {
+; short			sin_family;
+; unsigned short	sin_port;
+; struct in_addr	sin_addr;
+; char			sin_zero[8];
+; }SOCKADDR_IN;
+; 
+; typedef struct WSAData
+; {
+; U16				wVersion;
+; U16				wHighVersion;
+; char			szDescription[256+1];
+; char			szSystemStatus[128+1];
+; unsigned short	iMaxSockets;
+; unsigned short	iMaxUdpDg;
+; char  *		lpVendorInfo;
+; }WSADATA;
+; 
+; typedef struct sockaddr
+; {
+; u_short		sa_family;
+; char		sa_data[14];
+; }SOCKADDR;
+; 
+; struct sockproto
+; {
+; u_short		sp_family;
+; u_short		sp_protocol;
+; };
+; 
+; typedef struct linger
+; {
+; u_short		l_onoff;
+; u_short		l_linger;
+; }LINGER;
+; 
+; typedef struct _TRANSMIT_FILE_BUFFERS
+; {
+; VOID	*Head;
+; U32		HeadLength;
+; VOID	*Tail;
+; U32		TailLength;
+; }TRANSMIT_FILE_BUFFERS;
+; 
+; typedef struct _ISPINFO
+; {
+; unsigned char Version;	
+; char  UserName[60+1];
+; char  Password[14+1];
+; char  DialNumber[32+1];
+; char  ReDailTimes[4+1];
+; char  BoundRate[4+1];
+; char  ModemInitSet[14+1];
+; char  TTYMenu[22+1];
+; char  SendText0[14+1];
+; char  ExpectText1[14+1];
+; char  SendText1[14+1];
+; char  ExpectText2[14+1];
+; char  SendText2[14+1];
+; char  ExpectText3[14+1];
+; char  SendText3[14+1];
+; char  DNS[20];
+; 
+; int  com_port;
+; 
+; }ISPINFO, *PISPINFO;
+; 
+; VOID InitSocket( VOID );
+; SOCKET socket( S16 Domain, S16 Type, S16 Proto );
+; S16  closesocket( SOCKET Socket );
+; S16  connect( SOCKET Socket, const struct sockaddr *NamePtr, S16 NameLen );
+; S16  send( SOCKET Socket, const U8 *DataPtr, S16 DataLen, S16 Flag );
+; S16  recv( SOCKET Socket, U8 *DataPtr, S16 DataLen, S16 Flag );
+; S16  bind( SOCKET Socket, const struct sockaddr *NamePtr, S16 NameLen );
+; void ntohl( u_long *, u_long * );
+; u_short ntohs( u_short netshort );
+; void htonl( u_long *, u_long * );
+; u_short htons( u_short hostshort );
+; void inet_addr( const U8 *, u_long * );
+; U8   *inet_ntoa( struct in_addr *INAddrPtr );
+; S16  sendto( SOCKET Socket, const U8 *DataPtr, S16 DataLen, S16 Flag, const struct
+; sockaddr *DestSocketPtr, S16 DestLen );
+; S16  recvfrom( SOCKET Socket, U8 *DataPtr, S16 DataLen, S16 Flag, struct sockaddr 
+;*SourceSocketPtr, S16 *SourceLenPtr );
+; S16  StartUp( U8 *DialNumberPtr, U8 *UserNamePtr, U8 *PasswordPtr, U8 *DNSPtr, U8 
+;*ModemInitPtr );
+; S16  CleanUp( VOID );
+; struct hostent *gethostbyname( const U8 *NamePtr );
+; S16  select( S16 nfds, struct fd_set *ReadPtr, struct fd_set *WritePtr, struct fd_
+;set *ExceptPtr, TIMEVAL *TimeOutPtr );
+; 
+; typedef struct UART_DATA_FORMAT
+; {
+; unsigned char Data_Length;
+; 
+; unsigned char Stop_Bits;
+; 
+; unsigned char Parity_Enable;
+; 
+; unsigned char Parity_Even;
+; 
+; unsigned char Baud_Rate;
+; 
+; }UDF;
+; 
+; enum ComFuncList
+; {
+; RS232, IRDA
+; };
+; 
+; enum ComInitList
+; {
+; InitFailure,
+; InitSuccess
+; };
+; 
+; enum ComDiagList
+; {
+; DiagSuccess,
+; DiagFailure
+; };
+; 
+; enum ComSendList
+; {
+; SendSuccess,
+; SendFailure,
+; SendStopEsc
+; };
+; 
+; enum ComRecvList
+; {
+; RecvSuccess,
+; RecvFailure,
+; RecvStopEsc
+; };
+; 
+; enum ComClearList
+; {
+; ClearSuccess,
+; ClearFailure
+; };
+; 
+; enum ComVisitList
+; {
+; ReadUartReg,
+; WriteUartReg
+; };
+; 
+; S16  InitUartCfg( UDF *UartStructPtr, S16 UartLinkMode );
+; S16  InitUart( S16 UartProtocol, S16 UartLinkMode );
+; VOID CloseUart( S16 UartProtocol );
+; S16  TransmitData( S16 UartProtocol, U8 *DataPtr, U16 DataLen, U16 *SentLengthPtr 
+;);
+; S16  ReceiveData( S16 UartProtocol, U8 *DataPtr, U16 DataLen, U16 *RecvLengthPtr )
+;;
+; U8   VisitUartReg( S16 UartProtocol, S16 RegOffset, S16 Mode, U8 Data );
+; VOID SetUartIsr( S16 UartProtocol, U8 Uart_Ier, U16 Bank, VOID (*Uart_Isr)() );
+; S16	 SendATCmd( S16 UartProtocol, U8 *InputPtr, U16 InputBytes, U8 *OutputPtr, U16
+; OutputBytes, U16 TimeCount );
+; 
+; typedef struct _Header_DF
+; {
+; U16		wBlockSize;
+; U16		wFileID;
+; U8		bFileType;
+; U16		wAccessConditions;
+; U16		wKeyNums;
+; }Header_DF;
+; 
+; typedef struct _Header_EF
+; {
+; U16		wBlockSize;
+; U16		wFileID;
+; U8		bFileType;
+; U16		wAccessConditions;
+; U16		wKeyNums;
+; U8		bRecordLen;
+; U8		bWriteNumber;
+; }Header_EF;
+; 
+; U16	SC_Detect( VOID );
+; U8  SC_SendCommand( U8 *InputPtr, U16 InputBytes, U8 *OutputPtr, U16 OutputBytes )
+;;
+; VOID SC_GetATR( U8 **ATRPtr, S16 *LenPtr );
+; 
+; U16 Create_File( U8 Type, U8 *FileInfoPtr, U8 FileInfoLen );
+; U16 Delete_File( U16 File_ID );
+; U16 Invalidate( VOID );
+; U16 Rehabilitate( VOID );
+; 
+; U16 Verify_Key( U8 Type, U8 *ValuePtr );
+; U16 Change_Key( U8 Mode,U8 Type, U8 *ValuePtr );
+; U16 Unblock( U8 Mode, U8 Key_Num, U8 *PIN_ValuePtr );
+; U16 Get_Challenge( U8 *DataPtr );
+; U16 External_Authenticate( U8 Key_Num, U8 *ValuePtr );
+; U16 Internal_Authenticate( U8 Mode, U8 Key_Num, U8 *ValuePtr );
+; 
+; U16 Select( U16 File_ID );
+; U16 Read_Record( U8 Record_Num, U8 Mode, U8 DataLen, U8 *DataPtr );
+; U16 Write_Record( U8 *DataPtr, U8 DataLen );
+; U16 Update_Record( U8 Record_Num, U8 Mode, U8 DataLen, U8 *DataPtr );
+; U16 Read_Binary( U8 HOffset, U8 LOffset, U8 DataLen, U8 *DataPtr );
+; U16 Update_Binary( U8 HOffset, U8 LOffset, U8 DataLen, U8 *DataPtr );
+; U16 Get_Response( U8 DataLen, U8 *DataPtr );
+; 
+; typedef struct
+; {
+; U16			wSector;
+; U16			wCluster;
+; U16			wSectorOffset;
+; U16			wDirItemOffset;
+; U16			wStartCluster;
+; U32			dwFilePointer;
+; U32			dwFileSize;
+; U8			CacheNo;
+; U16			wCurCluster;
+; U16			wCurClusterNo;
+; U16			wCurSectorNo;
+; U16			Reserved;
+; }FILE_IDEN;
+; 
+; typedef struct
+; {
+; U8		cFileName[9];
+; U8		cExtName[4];
+; U8		byAttribute;
+; U16		wModifyTime;
+; U16		wModifyDate;
+; U16		wReserved;
+; U32		dwFileSize;
+; }FILE_INFO;
+; 
+; typedef struct
+; {
+; U8		CardProperty;
+; U8		CardLabel[12];
+; U32		TotalSize;
+; U32		FreeSize;
+; }MMC_INFO;
+; 
+; S16  mFormat( U8 *CardIdPtr );
+; S16  mInitialCard( U8 *CardIdPtr );
+; S16  mSetCardLabel( U8 *CardIdPtr, U8 *CardLabelPtr );
+; S16  mGetCardLabel( U8 *CardIdPtr, MMC_INFO *Mmc_InfoPtr );
+; S16  mGetCardInfo( U8 *CardIdPtr, MMC_INFO *Mmc_InfoPtr );
+; S16  mOpenFile( U8 *FilePtr, U16 Mode, FILE_IDEN *File_IdenPtr );
+; S16  mSetFilePointer( FILE_IDEN *File_IdenPtr, long *Offset, U16 MoveType );
+; S16  mWriteToFile( FILE_IDEN *File_IdenPtr, U8 *DataPtr, U16 DataLen );
+; S16  mReadFromFile( FILE_IDEN *File_IdenPtr, U8 *DataPtr, U16 DataLen, U16 *ReadPt
+;r );
+; S16  mGetFileInfo( FILE_IDEN *pFile_Iden, FILE_INFO *pFile_Info );
+; VOID mCloseFile( FILE_IDEN *File_IdenPtr );
+; S16  mRenFile( U8 *FilePtr, U8 *NewFilePtr );
+; S16  mDeleteFile( U8 *FilePtr );
+; S16  mOpenDirectory( U8 *FilePtr, U16 Mode, FILE_IDEN *File_IdenPtr );
+; S16  mGetDirectorySubItemNum( FILE_IDEN *File_IdenPtr, U16 *ItemNumPtr );
+; S16  mGetDirectorySubItem( FILE_IDEN *File_IdenPtr, FILE_INFO *File_InfoPtr, U16 I
+;ndex );
+; S16  mGetDirectoryInfo( FILE_IDEN *pFile_Iden, FILE_INFO *pFile_Info );
+; VOID mCloseDirectory( FILE_IDEN *File_IdenPtr );
+; S16  mRenDirectory( U8 *DirectoryPtr, U8 *NewDirectoryPtr );
+; S16  mDeleteDirectory( U8 *DirectoryPtr );
+; 
+; typedef struct
+; {
+; U16		year;
+; U8		month;
+; U8		day;
+; U8		hour;
+; U8		minute;
+; U8		second;
+; }TIMEDCS;
+; 
+; VOID FillBlock( U8 Color, S16 X, S16 Y, S16 Width, S16 Height );
+; VOID InverseBlock( S16 X, S16 Y, S16 Width, S16 Height );
+; VOID WriteDot( U8 Color, S16 X, S16 Y );
+; S16  ReadDot( S16 X, S16 Y );
+; VOID DrawVerticalLine( U8 Color, S16 X, S16 TopY, S16 BottomY, U8 Type );
+; VOID DrawHorizontalLine( U8 Color, S16 Y, S16 LeftX, S16 RightX, U8 Type );
+; VOID DrawRectangle( U8 Color, S16 X, S16 Y, S16 Width, S16 Height, U8 Type );
+; 
+; VOID GetImage( U8 *ImagePtr, S16 X, S16 Y, S16 Width, S16 Height );
+; VOID GetCharImage( U8 CharCode, U8 *ImagePtr, U8 FontMode );
+; VOID PutImage( U8 *ImagePtr, S16 X, S16 Y );
+; VOID PutBitmap( U8 *BitmapPtr, S16 X, S16 Y );
+; 
+; VOID SetCursorPosition( S16 X, S16 Y );
+; VOID GetCursorPosition( INT *XPtr, INT *YPtr );
+; VOID SetCursorStatus( U8 Status );
+; U8   GetCursorStatus( VOID );
+; VOID SetCursorShape( S16 Width, S16 Height );
+; VOID GetCursorShape( INT *WidthPtr, INT *HeightPtr );
+; 
+; VOID WriteChar( U8 Color, U8 CharCode, S16 X, S16 Y );
+; VOID WriteText( U8 Color, U8 *TextPtr, S16 X, S16 Y );
+; S16  GetCharWidth( U8 CharCode );
+; S16  GetTextWidth( U8 *TextPtr );
+; VOID SetFontMode( U8 FontMode );
+; U8   GetFontMode( VOID );
+; VOID WriteLong( U8 Color, long *LongPtr, S16 X, S16 Y );
+; VOID WriteDouble( U8 Color, double Value, S16 X, S16 Y );
+; 
+; VOID ScrollPageUp( S16 X1, S16 Y1, S16 X2, S16 Y2, S16 ScrollOffset, U8 Color );
+; VOID ScrollPageDn( S16 X1, S16 Y1, S16 X2, S16 Y2, S16 ScrollOffset, U8 Color );
+; VOID ScrollPageLeft( S16 X1, S16 Y1, S16 X2, S16 Y2, S16 ScrollOffset, U8 Color );
+;
+; VOID ScrollPageRight( S16 X1, S16 Y1, S16 X2, S16 Y2, S16 ScrollOffset, U8 Color )
+;;
+; VOID BackupLcd( S16 X, S16 Y, S16 Width, S16 Height );
+; VOID RestoreLcd( S16 X, S16 Y, S16 Width, S16 Height );
+; VOID BackupHelpLcd( VOID );
+; VOID RestoreHelpLcd( VOID );
+; VOID BackupFntArea( VOID );
+; VOID RestoreFntArea( VOID );
+; 
+; VOID GetTime( TIMEDCS *RtcTime );
+; VOID EnableTimer2( S16 Status );
+; U8   Timer2Control( U8 Status );
+; VOID SetTimerIsr( S16 Bank, TIMERISRFUNC TimerIsrFunc );
+; VOID DisTimerIsr( VOID );
+; S16  DelaySecond( U8 Time, U16 *CheckKeyBufPtr );
+; S16  Delay250ms( U8 Time, U16 *CheckKeyBufPtr );
+; VOID Delay1ms( U16 Time );
+; 
+; S16  GetCountryMode( VOID );
+; VOID SetIndiOn( U16 OnMask );
+; VOID SetIndiOff( U16 OffMask );
+; VOID SetTone( S16 ToneFreq );
+; VOID MakeWarnTone( VOID );
+; VOID GetFirmwareVersion( U8 *VersionPtr );
+; VOID SetRamBank( S16 Bank );
+; S16  GetRamBank( VOID );
+; S16  GetRomBank( VOID );
+; S16  GetFirstRomBank( VOID );
+; VOID CopyBetweenBank( S16 SourceBank, U8 *SourceAddr, S16 DestBank, U8 *DestAddr, 
+;S16 Length );
+; VOID SaveData( U8 *DataPtr, S16 Size );
+; VOID ReadData( U8 *DataPtr, S16 Size );
+; VOID SetPowerMode( S16 Mode );
+; S16  BatteryTest( U8 BatteryType );
+; VOID ShutDownIsr( S16 Bank, SHUTDOWNISRFUNC pShutDownIsrFunc );
+; S16  GetConnectStatus( VOID );
+; 
+; U16  GetKey( VOID );
+; U16  ScanKey( VOID );
+; VOID ClearKeyBuf( VOID );
+; VOID SetKeyTone( S16 Status );
+; S16  GetKeyTone( VOID );
+; VOID MaskSymKey( U8 SymKeyStatus );
+; VOID MaskFntKey( U8 FntKeyStatus );
+; 
+; S16  StringMenu( U8 *MenuContentPtr, S16 Type );
+; S16  StringMenu2( U8 *pMenuContent1, U8 *pMenuContent2, S16 Type );
+; VOID SetGetPhoneStringFunc( PHONESTRINGFUNC *pPhoneStringFunc );
+; VOID VerticalScrollBar( S16 TotalSections, S16 VisibleSections, S16 CurrentSection
+;Index, S16 X, S16 Y, S16 Height );
+; VOID ShadowEdgeRect( S16 X, S16 Y, S16 Width, S16 Height );
+; S16  StringDialogBox( U8 *MessagePtr, S16 Type );
+; S16  StringDialogBox2( U8 *pMessage1, U8 *pMessage2, S16 Type );
+; S16  StringPhoneMenu( U8 *MenuContentPtr, S16 Type );
+; S16  StringPhoneMenu2( U8 *pMenuContent1, U8 *pMenuContent2, S16 Type );
+; BOOL EditFunction( U8 *BufferPtr, S16 MaxRow, S16 TotalRow, S16 MaxX, S16 MaxChars
+;, S16 X, S16 Y, S16 LineGap, S16 Type );
+; BOOL InputControl( U8 *TitlePtr, U8 *BufferPtr, S16 InputMode, S16 BufLen, S16 X, 
+;S16 Y, S16 Width, S16 Type );
+; VOID Button( U8 *TitlePtr, S16 X, S16 Y, S16 Active );
+; VOID CheckBox( U8 *BufferPtr, U8 *SelectPtr, S16 X, S16 Y );
+; S16  RadioButton( U8 *BufferPtr, U8 Field, S16 X, S16 Y );
+; 
+; S16  strcmp( U8 *StringPtr1, U8 *StringPtr2 );
+; S16  strncmp( U8 *StringPtr1, U8 *StringPtr2, S16 Count );
+; U8   *strcpy( U8 *DestStringPtr, U8 *SourceStringPtr );
+; U8   *strstr( U8 *SourceStringPtr, U8 *SubStringPtr );
+; U8   *strcat( U8 *DestStringPtr, U8 *SourceStringPtr );
+; U8   *strncat( U8 *DestStringPtr, U8 *SourceStringPtr, S16 Count );
+; S16  strlen( U8 *StringPtr );
+; VOID *memcpy( VOID *DestPtr, VOID *SourcePtr, S16 Count );
+; VOID *memset( VOID *DestPtr, S16 c, S16 Count );
+; S16  atoi( U8 *StringPtr );
+; 
+; U8   *itoa( S16 Value, U8 *StringPtr, S16 Radix );
+; U8   *ltoa( long *ValuePtr, U8 *StringPtr, S16 Radix );
+; VOID ftoa( float Value, U8 *StringPtr );
+; VOID _strtod( U8 *StringPtr, U8 **EndPtr, double *dPtr );
+; 
+; S16  open( S16 BankNo, S16 Offset );
+; VOID close( S16 handle );
+; VOID lseek( S16 handle, long offset, S16 origin );
+; VOID read( S16 handle, U8 *buffer, S16 count );
+; 
+; #pragma pack(push,ic35term_h,1)
+; 
+; typedef struct 
+; {
+; 
+; U16 xs,xe,ys,ye;
+; 
+; U8 bw;
+; 
+; S8 ldist;
+; 
+; U16 cx,cy;
+; 
+; U8 font;
+; 
+; U8 height;
+; 
+; S8 space;
+; 
+; BOOL visible;
+; } TTWindow;
+; 
+; extern void	it_SetWindow(TTWindow *,U16,U16,U16,U16);
+; extern void	it_SetBreakWords(TTWindow *,U8);
+; extern void	it_SetLineDist(TTWindow *,S8);
+; extern void it_SetCursor(TTWindow *,U16,U16);
+; extern void	it_SetFont(TTWindow *, U8);
+; extern void it_ClrScr(TTWindow *);
+; extern void it_SetVisible(TTWindow *,BOOL);
+; extern void it_BasicSetup(TTWindow *);
+; 
+; void it_ScrollLine(TTWindow *);
+; void it_ScrollScreen(TTWindow *);
+; 
+; extern char * it_printsln(TTWindow *,char *);
+; extern char * it_printtxt(TTWindow *,char *);
+; 
+; #pragma pack(pop,ic35term_h)
+; 
+; typedef U8 (VMCOMMAND)();	
+; 
+; typedef struct tagVariable {
+; union {
+; S8     m_s8;
+; S16    m_s16;
+; S32    m_s32;
+; float  m_float;
+; U8    *m_string;
+; } val;
+; 
+; U8 m_Typ;				
+; char *m_Name;			
+; } Variable;
+; 
+; typedef struct tagCompilerLabel {
+; U8  *name;
+; U8  typ;
+; U16 address;
+; } CompilerLabel;
+; 
+; typedef struct tagHierInfo 
+; {
+; U16    hierTyp;						
+; U16    hierVar;						
+; U16    *hierExit;					
+; U16    hierAddress;					
+; } HierInfo;
+; 
+; extern HierInfo  gHierInfos[];
+; extern U16       gCurHierInfo;
+; 
+; typedef struct tagBasicToken
+; {
+; U8 *name;
+; U8 token;
+; } BasicToken;
+; 
+; typedef struct tagToken {
+; U8		m_token;
+; U8		*m_input;
+; U8		*m_word;
+; Variable m_Variable;
+; };
+; 
+; extern U8 gFlagZero;						
+; extern U8 gFlagLess;
+; 
+; extern U8 gPrintBuf[80];
+; extern TTWindow gWindow;
+; 
+; extern U8 gStack[1024];				
+; extern U8 *gStackPtr;
+; 
+; extern U8 *gCodeBase;
+; extern U8 gCode[1024];
+; extern U8 *gCodePtr;
+; 
+; extern Variable gVariables[200];	
+; extern U16 gLastVar;
+; extern U8 gSource[4096];
+; extern U8 *gSourcePtr;
+; extern U8 *gOldSourcePtr;
+; extern U8 gTokenBuf[50];
+; 
+; extern U8 gTempBuf[256];
+; extern U8 gTempEnd;
+; 
+; extern U32 gLitLong;
+; extern U16 gLitInt;
+; extern U8  gLitShort;
+; 
+; extern U8  gExprType;
+; extern U8  gExprCastType;
+; extern U8  gStringBuf[256];
+; extern U8  gErrorCode;
+; 
+; extern U8 gMemory[1024+1];
+; extern U8 *gMemoryPtr;
+; extern U8 *gHandles[100+1];
+; extern U8 **gNextHandle;
+; 
+; extern BasicToken gBasToken[];
+; 
+; extern VMCOMMAND* gCmdJumpTable[256];
+; 
+; extern BasicToken gBasToken[];
+; extern char *Errors[];
+; extern char *__nl;
+; extern char *__errUnexp;
+; 
+; void InitVM();
+; void ExecuteVM(U8 *adr);
+; 
+; U8 cmd_Error()
+; {
+	public cmd_Error_
+cmd_Error_:
+; return -1;
+	LD	HL,255
+	OR	1
+	RET
+; }
+_20001 EQU 0
+; 
+; U8 cmd_Load_C8()
+; {
+	public cmd_Load_C8_
+cmd_Load_C8_:
+; *--gStackPtr = *gCodePtr++;
+	LD	HL,(gCodePtr_)
+	LD	E,(HL)
+	INC	HL
+	LD	(gCodePtr_),HL
+	LD	HL,(gStackPtr_)
+	DEC	HL
+	LD	(gStackPtr_),HL
+	LD	(HL),E
+; return 0;
+	LD	HL,0
+	XOR	A
+	RET
+; }
+_20002 EQU 0
+; 
+; U8 cmd_Load_C16()
+; {
+	public cmd_Load_C16_
+cmd_Load_C16_:
+; *(--((U16*)gStackPtr)) = *((U16*)gCodePtr)++;
+	LD	HL,(gCodePtr_)
+	LD	E,(HL)
+	INC	HL
+	INC	HL
+	LD	(gCodePtr_),HL
+	DEC	HL
+	LD	D,(HL)
+	LD	HL,(gStackPtr_)
+	DEC	HL
+	DEC	HL
+	LD	(gStackPtr_),HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; return 0;
+	LD	HL,0
+	XOR	A
+	RET
+; }
+_20003 EQU 0
+; 
+; U8 cmd_Load_C32()
+; {
+	public cmd_Load_C32_
+cmd_Load_C32_:
+; *(--((U32*)gStackPtr)) = *((U32*)gCodePtr)++;
+	LD	HL,(gStackPtr_)
+	LD	DE,-4
+	ADD	HL,DE
+	LD	(gStackPtr_),HL
+	PUSH	HL
+	LD	HL,(gCodePtr_)
+	LD	DE,4
+	ADD	HL,DE
+	LD	(gCodePtr_),HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+; return 0;
+	LD	HL,0
+	XOR	A
+	RET
+; }
+_20004 EQU 0
+; 
+; U8 cmd_Load_CF()
+; {
+	public cmd_Load_CF_
+cmd_Load_CF_:
+; *(--((float*)gStackPtr)) = *((float*)gCodePtr)++;
+	LD	HL,(gStackPtr_)
+	LD	DE,-4
+	ADD	HL,DE
+	LD	(gStackPtr_),HL
+	PUSH	HL
+	LD	HL,(gCodePtr_)
+	LD	DE,4
+	ADD	HL,DE
+	LD	(gCodePtr_),HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+; return 0;
+	LD	HL,0
+	XOR	A
+	RET
+; }
+_20005 EQU 0
+; 
+; U8 cmd_Load_V8()
+; {
+	public cmd_Load_V8_
+cmd_Load_V8_:
+; *(--gStackPtr) = gVariables[*gCodePtr++].val.m_s8;
+	LD	HL,(gCodePtr_)
+	LD	E,(HL)
+	INC	HL
+	LD	(gCodePtr_),HL
+	LD	D,0
+	LD	HL,7
+	CALL	_ml
+	LD	DE,gVariables_
+	ADD	HL,DE
+	LD	E,(HL)
+	LD	HL,(gStackPtr_)
+	DEC	HL
+	LD	(gStackPtr_),HL
+	LD	(HL),E
+; 
+; return 0;						
+	LD	HL,0
+	XOR	A
+	RET
+; }
+_20006 EQU 0
+; 
+; U8 cmd_Load_V16()
+; {
+	public cmd_Load_V16_
+;VOID
+cmd_Load_V16_:
+; *(--((U16*)gStackPtr)) = gVariables[*((U16*)gCodePtr++)].val.m_s16;;
+	LD	HL,(gCodePtr_)
+	LD	E,(HL)
+	INC	HL
+	LD	(gCodePtr_),HL
+	LD	D,(HL)
+	LD	HL,7
+	CALL	_ml
+	LD	DE,gVariables_
+	ADD	HL,DE
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,(gStackPtr_)
+	DEC	HL
+	DEC	HL
+	LD	(gStackPtr_),HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; 
+; }
+	RET
+_20007 EQU 0
+; 
+; U8 cmd_Load_V32()
+; {
+	public cmd_Load_V32_
+cmd_Load_V32_:
+	LD	DE,_20008
+	CALL	zsave
+; U16		idx;				
+; U32        *sp;				
+; U16		*cp;				
+; cp = (U16*) gCodePtr;			
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,2-_20008
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; idx = *cp++;					
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20008
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; gCodePtr = (U8*)cp;			
+	LD	HL,2-_20008
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gCodePtr_),HL
+; sp = (U32*)gStackPtr;			
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	INC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; *(--sp) = gVariables[idx].val.m_s32;
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,8-_20008
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,7
+	CALL	_ml
+	LD	DE,gVariables_
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+; gStackPtr = (U8*)sp;			
+	LD	HL,4-_20008
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;						
+	LD	HL,0
+	RET
+; }
+_20008 EQU -6
+; 
+; U8 cmd_Load_VF()
+; {
+	public cmd_Load_VF_
+cmd_Load_VF_:
+	LD	DE,_20009
+	CALL	zsave
+; U16		idx;				
+; float     *sp;				
+; U16		*cp;				
+; cp = (U16*) gCodePtr;			
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,2-_20009
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; idx = *cp++;					
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20009
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; gCodePtr = (U8*)cp;			
+	LD	HL,2-_20009
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gCodePtr_),HL
+; sp = (float*)gStackPtr;			
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	INC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; *(--sp) = gVariables[idx].val.m_s8;
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,8-_20009
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,7
+	CALL	_ml
+	LD	DE,gVariables_
+	ADD	HL,DE
+	LD	E,(HL)
+	EX	DE,HL
+	CALL	_ctoi
+	CALL	_itod
+	POP	HL
+	CALL	_fst
+; gStackPtr = (U8*)sp;			
+	LD	HL,4-_20009
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;						
+	LD	HL,0
+	RET
+; }
+_20009 EQU -6
+; 
+; U8 cmd_Store_V8()
+; {
+	public cmd_Store_V8_
+cmd_Store_V8_:
+	LD	DE,_20010
+	CALL	zsave
+; U16 idx; U8 *sp; Variable *v; U16 *cp; cp = (U16*) gCodePtr; idx = *cp++; gCodePtr
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,0-_20010
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20010
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; = (U8*)cp; v = &gVariables[idx]; sp = (U8*)gStackPtr; v->val.m_s8 = *(sp++); gStac
+	LD	HL,0-_20010
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gCodePtr_),HL
+	LD	HL,6-_20010
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,7
+	CALL	_ml
+	LD	DE,gVariables_
+	ADD	HL,DE
+	EX	DE,HL
+	LD	HL,2-_20010
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,4-_20010
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	LD	HL,4-_20010
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+;kPtr = (U8*)sp; return 0;
+	LD	HL,4-_20010
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20010 EQU -8
+; 
+; U8 cmd_Store_V16()
+; {
+	public cmd_Store_V16_
+cmd_Store_V16_:
+	LD	DE,_20011
+	CALL	zsave
+; 
+; U16 idx; U16 *sp; Variable *v; U16 *cp; cp = (U16*) gCodePtr; idx = *cp++; gCodePt
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,0-_20011
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20011
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+;r = (U8*)cp; v = &gVariables[idx]; sp = (U16*)gStackPtr; v->val.m_s16 = *(sp++); gS
+	LD	HL,0-_20011
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gCodePtr_),HL
+	LD	HL,6-_20011
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,7
+	CALL	_ml
+	LD	DE,gVariables_
+	ADD	HL,DE
+	EX	DE,HL
+	LD	HL,2-_20011
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,4-_20011
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	LD	HL,4-_20011
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+;tackPtr = (U8*)sp; return 0;
+	LD	HL,4-_20011
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20011 EQU -8
+; 
+; U8 cmd_Store_V32()
+; {
+	public cmd_Store_V32_
+cmd_Store_V32_:
+	LD	DE,_20012
+	CALL	zsave
+; U16 idx; U32 *sp; Variable *v; U16 *cp; cp = (U16*) gCodePtr; idx = *cp++; gCodePt
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,0-_20012
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20012
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+;r = (U8*)cp; v = &gVariables[idx]; sp = (U32*)gStackPtr; v->val.m_s32 = *(sp++); gS
+	LD	HL,0-_20012
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gCodePtr_),HL
+	LD	HL,6-_20012
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,7
+	CALL	_ml
+	LD	DE,gVariables_
+	ADD	HL,DE
+	EX	DE,HL
+	LD	HL,2-_20012
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,4-_20012
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	INC	HL
+	INC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+;tackPtr = (U8*)sp; return 0;
+	LD	HL,4-_20012
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20012 EQU -8
+; 
+; U8 cmd_Store_VF()
+; {
+	public cmd_Store_VF_
+cmd_Store_VF_:
+	LD	DE,_20013
+	CALL	zsave
+; U16 idx; float *sp; Variable *v; U16 *cp; cp = (U16*) gCodePtr; idx = *cp++; gCode
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,0-_20013
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20013
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+;Ptr = (U8*)cp; v = &gVariables[idx]; sp = (float*)gStackPtr; v->val.m_float = *(sp+
+	LD	HL,0-_20013
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gCodePtr_),HL
+	LD	HL,6-_20013
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,7
+	CALL	_ml
+	LD	DE,gVariables_
+	ADD	HL,DE
+	EX	DE,HL
+	LD	HL,2-_20013
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,4-_20013
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+;+); gStackPtr = (U8*)sp; return 0;
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	INC	HL
+	INC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,4-_20013
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20013 EQU -8
+; 
+; U8 cmd_Dup_8()
+; {
+	public cmd_Dup_8_
+cmd_Dup_8_:
+	LD	DE,_20014
+	CALL	zsave
+; U8 x;
+; U8 *sp;
+; 
+; sp = (U8*)gStackPtr;
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,5-_20014
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = *sp;
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	EX	DE,HL
+	LD	E,(HL)
+	LD	HL,7-_20014
+	ADD	HL,SP
+	LD	(HL),E
+; *(--sp) = x;
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+; 
+; gStackPtr = (U8*)sp;
+	LD	HL,5-_20014
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;
+	LD	HL,0
+	RET
+; }
+_20014 EQU -3
+; 
+; U8 cmd_Dup_16()
+; {
+	public cmd_Dup_16_
+cmd_Dup_16_:
+	LD	DE,_20015
+	CALL	zsave
+; U16 x, *sp;
+; 
+; sp = (U16*)gStackPtr;
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,4-_20015
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = *sp;
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,6-_20015
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; *(--sp) = x;
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; 
+; gStackPtr = (U8*)sp;
+	LD	HL,4-_20015
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;
+	LD	HL,0
+	RET
+; }
+_20015 EQU -4
+; 
+; U8 cmd_Dup_32()
+; {
+	public cmd_Dup_32_
+cmd_Dup_32_:
+	LD	DE,_20016
+	CALL	zsave
+; U32 x,*sp;
+; 
+; sp = (U32*)gStackPtr;
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,2-_20016
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = *sp;
+	INC	HL
+	PUSH	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+; *(--sp) = x;
+	LD	HL,2-_20016
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,6-_20016
+	ADD	HL,SP
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+; 
+; gStackPtr = (U8*)sp;
+	LD	HL,2-_20016
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;
+	LD	HL,0
+	RET
+; }
+_20016 EQU -6
+; 
+; U8 cmd_Dup_F()
+; {
+	public cmd_Dup_F_
+cmd_Dup_F_:
+	LD	DE,_20017
+	CALL	zsave
+; float x,*sp;
+; 
+; sp = (float*)gStackPtr;
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,2-_20017
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = *sp;
+	INC	HL
+	PUSH	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+; *(--sp) = x;
+	LD	HL,2-_20017
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,6-_20017
+	ADD	HL,SP
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+; 
+; gStackPtr = (U8*)sp;
+	LD	HL,2-_20017
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;
+	LD	HL,0
+	RET
+; }
+_20017 EQU -6
+; 
+; U8 cmd_AddSp()
+; {
+	public cmd_AddSp_
+cmd_AddSp_:
+	LD	DE,_20018
+	CALL	zsave
+; U8 x;
+; x = *gCodePtr++;
+	LD	HL,(gCodePtr_)
+	LD	E,(HL)
+	INC	HL
+	LD	(gCodePtr_),HL
+	LD	HL,7-_20018
+	ADD	HL,SP
+	LD	(HL),E
+; gStackPtr += x;
+	LD	D,0
+	LD	HL,(gStackPtr_)
+	ADD	HL,DE
+	LD	(gStackPtr_),HL
+; return 0;
+	LD	H,D
+	LD	L,D
+	RET
+; }
+_20018 EQU -1
+; 
+; U8 cmd_Ext_8_16()
+; {
+	public cmd_Ext_8_16_
+cmd_Ext_8_16_:
+	LD	DE,_20019
+	CALL	zsave
+; S8 *sp1; S16 *sp2,x; sp1 = (S8*)gStackPtr; x = (S16)*(sp1++); gStackPtr = (U8*)sp1
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20019
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	CALL	_ctoi
+	EX	DE,HL
+	LD	HL,2-_20019
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+;; sp2 = (S16*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	DE
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20019
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20019 EQU -6
+; 
+; U8 cmd_Ext_8_32()
+; {
+	public cmd_Ext_8_32_
+cmd_Ext_8_32_:
+	LD	DE,_20020
+	CALL	zsave
+; S8 *sp1; S32 *sp2,x; sp1 = (S8*)gStackPtr; x = (S32)*(sp1++); gStackPtr = (U8*)sp1
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20020
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20020
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,8-_20020
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	CALL	_ctoi
+	CALL	_itox
+	POP	HL
+	CALL	_lst
+;; sp2 = (S32*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;
+	LD	HL,6-_20020
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,2-_20020
+	ADD	HL,SP
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,4-_20020
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20020 EQU -8
+; 
+; U8 cmd_Ext_8_F()
+; {
+	public cmd_Ext_8_F_
+cmd_Ext_8_F_:
+	LD	DE,_20021
+	CALL	zsave
+; S8 *sp1; float *sp2,x; sp1 = (S8*)gStackPtr; x = (float)*(sp1++); gStackPtr = (U8*
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20021
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20021
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,8-_20021
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	CALL	_ctoi
+	CALL	_itod
+	POP	HL
+	CALL	_fst
+;)sp1; sp2 = (float*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	LD	HL,6-_20021
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,2-_20021
+	ADD	HL,SP
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,4-_20021
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20021 EQU -8
+; 
+; U8 cmd_Ext_16_8()
+; {
+	public cmd_Ext_16_8_
+cmd_Ext_16_8_:
+	LD	DE,_20022
+	CALL	zsave
+; S16 *sp1; S8 *sp2,x; sp1 = (S16*)gStackPtr; x = (S8)*(sp1++); gStackPtr = (U8*)sp1
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20022
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,3-_20022
+	ADD	HL,SP
+	LD	(HL),E
+;; sp2 = (S8*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	LD	HL,4-_20022
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20022 EQU -5
+; 
+; U8 cmd_Ext_16_32()
+; {
+	public cmd_Ext_16_32_
+cmd_Ext_16_32_:
+	LD	DE,_20023
+	CALL	zsave
+; S16 *sp1; S32 *sp2,x; sp1 = (S16*)gStackPtr; x = (S32)*(sp1++); gStackPtr = (U8*)s
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20023
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20023
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,8-_20023
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	LD	E,A
+	EX	DE,HL
+	CALL	_itox
+	POP	HL
+	CALL	_lst
+;p1; sp2 = (S32*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	LD	HL,6-_20023
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,2-_20023
+	ADD	HL,SP
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,4-_20023
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20023 EQU -8
+; 
+; U8 cmd_Ext_16_F()
+; {
+	public cmd_Ext_16_F_
+cmd_Ext_16_F_:
+	LD	DE,_20024
+	CALL	zsave
+; S16 *sp1; float *sp2,x; sp1 = (S16*)gStackPtr; x = (float)*(sp1++); gStackPtr = (U
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20024
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20024
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,8-_20024
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	LD	E,A
+	EX	DE,HL
+	CALL	_itod
+	POP	HL
+	CALL	_fst
+;8*)sp1; sp2 = (float*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	LD	HL,6-_20024
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,2-_20024
+	ADD	HL,SP
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,4-_20024
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20024 EQU -8
+; 
+; U8 cmd_Ext_32_8()
+; {
+	public cmd_Ext_32_8_
+cmd_Ext_32_8_:
+	LD	DE,_20025
+	CALL	zsave
+; S32 *sp1; S8 *sp2,x; sp1 = (S32*)gStackPtr; x = (S8)*(sp1++); gStackPtr = (U8*)sp1
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20025
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	CALL	_xtoi
+	EX	DE,HL
+	LD	HL,3-_20025
+	ADD	HL,SP
+	LD	(HL),E
+;; sp2 = (S8*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	LD	HL,4-_20025
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20025 EQU -5
+; 
+; U8 cmd_Ext_32_16()
+; {
+	public cmd_Ext_32_16_
+cmd_Ext_32_16_:
+	LD	DE,_20026
+	CALL	zsave
+; S32 *sp1; S16 *sp2,x; sp1 = (S32*)gStackPtr; x = (S16)*(sp1++); gStackPtr = (U8*)s
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20026
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	CALL	_xtoi
+	EX	DE,HL
+	LD	HL,2-_20026
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+;p1; sp2 = (S16*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	DE
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20026
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20026 EQU -6
+; 
+; U8 cmd_Ext_32_F()
+; {
+	public cmd_Ext_32_F_
+cmd_Ext_32_F_:
+	LD	DE,_20027
+	CALL	zsave
+; S32 *sp1; float *sp2,x; sp1 = (S32*)gStackPtr; x = (float)*(sp1++); gStackPtr = (U
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20027
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20027
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,8-_20027
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	CALL	_xtod
+	POP	HL
+	CALL	_fst
+;8*)sp1; sp2 = (float*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	LD	HL,6-_20027
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,2-_20027
+	ADD	HL,SP
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,4-_20027
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20027 EQU -8
+; 
+; U8 cmd_Ext_F_8()
+; {
+	public cmd_Ext_F_8_
+cmd_Ext_F_8_:
+	LD	DE,_20028
+	CALL	zsave
+; float *sp1; S8 *sp2,x; sp1 = (float*)gStackPtr; x = (S8)*(sp1++); gStackPtr = (U8*
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20028
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	CALL	_dtoi
+	EX	DE,HL
+	LD	HL,3-_20028
+	ADD	HL,SP
+	LD	(HL),E
+;)sp1; sp2 = (S8*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	LD	HL,4-_20028
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20028 EQU -5
+; 
+; U8 cmd_Ext_F_16()
+; {
+	public cmd_Ext_F_16_
+cmd_Ext_F_16_:
+	LD	DE,_20029
+	CALL	zsave
+; float *sp1; S16 *sp2,x; sp1 = (float*)gStackPtr; x = (S16)*(sp1++); gStackPtr = (U
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20029
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	CALL	_dtoi
+	EX	DE,HL
+	LD	HL,2-_20029
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+;8*)sp1; sp2 = (S16*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	DE
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20029
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20029 EQU -6
+; 
+; U8 cmd_Ext_F_32()
+; {
+	public cmd_Ext_F_32_
+cmd_Ext_F_32_:
+	LD	DE,_20030
+	CALL	zsave
+; float *sp1; S32 *sp2,x; sp1 = (float*)gStackPtr; x = (S32)*(sp1++); gStackPtr = (U
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,6-_20030
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20030
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,8-_20030
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	CALL	_dtox
+	POP	HL
+	CALL	_lst
+;8*)sp1; sp2 = (S32*)gStackPtr; *(--sp2) = x; gStackPtr = (U8*)sp2; return 0;;
+	LD	HL,6-_20030
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	(gStackPtr_),DE
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,2-_20030
+	ADD	HL,SP
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,4-_20030
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20030 EQU -8
+; 
+; U8 cmd_add_8()
+; {
+	public cmd_add_8_
+cmd_add_8_:
+	LD	DE,_20031
+	CALL	zsave
+; U8 a,b,c, *sp; sp = (U8*)gStackPtr; a = *(sp++); b = *(sp++); c = a + b; *(--sp) =
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,3-_20031
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,7-_20031
+	ADD	HL,SP
+	LD	(HL),E
+	LD	HL,3-_20031
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	(HL),A
+	LD	E,A
+	LD	D,0
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	POP	HL
+	ADD	HL,DE
+	EX	DE,HL
+	LD	HL,5-_20031
+	ADD	HL,SP
+	LD	(HL),E
+; c; gStackPtr = (U8*)sp; return 0; 
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	LD	HL,3-_20031
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20031 EQU -5
+; 
+; U8 cmd_add_16()
+; {
+	public cmd_add_16_
+cmd_add_16_:
+	LD	DE,_20032
+	CALL	zsave
+; U16 a,b,c, *sp; sp = (U16*)gStackPtr; a = *(sp++); b = *(sp++); c = a + b; *(--sp)
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,0-_20032
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20032
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20032
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	LD	HL,4-_20032
+	ADD	HL,SP
+	LD	(HL),A
+	INC	HL
+	LD	(HL),D
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	ADD	HL,DE
+	EX	DE,HL
+	LD	HL,2-_20032
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; = c; gStackPtr = (U8*)sp; return 0; 
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20032
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20032 EQU -8
+; 
+; U8 cmd_add_32()
+; {
+	public cmd_add_32_
+cmd_add_32_:
+	LD	DE,_20033
+	CALL	zsave
+; U32 a,b,c, *sp; sp = (U32*)gStackPtr; a = *(sp++); b = *(sp++); c = a + b; *(--sp)
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20033
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20033
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20033
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,0-_20033
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20033
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,-4-_20033
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20033
+	ADD	HL,SP
+	CALL	_lldp
+	LD	HL,2-_20033
+	ADD	HL,SP
+	CALL	_llds
+	CALL	_lad
+	POP	HL
+	CALL	_lst
+; = c; gStackPtr = (U8*)sp; return 0; 
+	LD	HL,-6-_20033
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,-2-_20033
+	ADD	HL,SP
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,-6-_20033
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20033 EQU -14
+; 
+; U8 cmd_add_f()
+; {
+	public cmd_add_f_
+cmd_add_f_:
+	LD	DE,_20034
+	CALL	zsave
+; float a,b,c, *sp; sp = (float*)gStackPtr; a = *(sp++); b = *(sp++); c = a + b; *(-
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20034
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20034
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20034
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,0-_20034
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20034
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,-4-_20034
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20034
+	ADD	HL,SP
+	CALL	_fldp
+	LD	HL,2-_20034
+	ADD	HL,SP
+	CALL	_flds
+	CALL	_dad
+	POP	HL
+	CALL	_fst
+;-sp) = c; gStackPtr = (U8*)sp; return 0; 
+	LD	HL,-6-_20034
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,-2-_20034
+	ADD	HL,SP
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,-6-_20034
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20034 EQU -14
+; 
+; U8 cmd_sub_8()
+; {
+	public cmd_sub_8_
+cmd_sub_8_:
+	LD	DE,_20035
+	CALL	zsave
+; U8 a,b,c, *sp; sp = (U8*)gStackPtr; a = *(sp++); b = *(sp++); c = a - b; *(--sp) =
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,3-_20035
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,7-_20035
+	ADD	HL,SP
+	LD	(HL),E
+	LD	HL,3-_20035
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	(HL),A
+	LD	E,A
+	LD	D,0
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	POP	HL
+	AND	A
+	EX	DE,HL
+	SBC	HL,DE
+	EX	DE,HL
+	LD	HL,5-_20035
+	ADD	HL,SP
+	LD	(HL),E
+; c; gStackPtr = (U8*)sp; return 0;
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	LD	HL,3-_20035
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20035 EQU -5
+; 
+; U8 cmd_sub_16()
+; {
+	public cmd_sub_16_
+cmd_sub_16_:
+	LD	DE,_20036
+	CALL	zsave
+; U16 a,b,c, *sp; sp = (U16*)gStackPtr; a = *(sp++); b = *(sp++); c = a - b; *(--sp)
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,0-_20036
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20036
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20036
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	LD	HL,4-_20036
+	ADD	HL,SP
+	LD	(HL),A
+	INC	HL
+	LD	(HL),D
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	AND	A
+	EX	DE,HL
+	SBC	HL,DE
+	EX	DE,HL
+	LD	HL,2-_20036
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; = c; gStackPtr = (U8*)sp; return 0;
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20036
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20036 EQU -8
+; 
+; U8 cmd_sub_32()
+; {
+	public cmd_sub_32_
+cmd_sub_32_:
+	LD	DE,_20037
+	CALL	zsave
+; U32 a,b,c, *sp; sp = (U32*)gStackPtr; a = *(sp++); b = *(sp++); c = a - b; *(--sp)
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20037
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20037
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20037
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,0-_20037
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20037
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,-4-_20037
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20037
+	ADD	HL,SP
+	CALL	_lldp
+	LD	HL,2-_20037
+	ADD	HL,SP
+	CALL	_llds
+	CALL	_lsb
+	POP	HL
+	CALL	_lst
+; = c; gStackPtr = (U8*)sp; return 0;
+	LD	HL,-6-_20037
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,-2-_20037
+	ADD	HL,SP
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,-6-_20037
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20037 EQU -14
+; 
+; U8 cmd_sub_f()
+; {
+	public cmd_sub_f_
+cmd_sub_f_:
+	LD	DE,_20038
+	CALL	zsave
+; float a,b,c, *sp; sp = (float*)gStackPtr; a = *(sp++); b = *(sp++); c = a - b; *(-
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20038
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20038
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20038
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,0-_20038
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20038
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,-4-_20038
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20038
+	ADD	HL,SP
+	CALL	_fldp
+	LD	HL,2-_20038
+	ADD	HL,SP
+	CALL	_flds
+	CALL	_dsb
+	POP	HL
+	CALL	_fst
+;-sp) = c; gStackPtr = (U8*)sp; return 0;
+	LD	HL,-6-_20038
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,-2-_20038
+	ADD	HL,SP
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,-6-_20038
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20038 EQU -14
+; 
+; U8 cmd_mult_8()
+; {
+	public cmd_mult_8_
+cmd_mult_8_:
+	LD	DE,_20039
+	CALL	zsave
+; U8 a,b,c, *sp; sp = (U8*)gStackPtr; a = *(sp++); b = *(sp++); c = a * b; *(--sp) =
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,3-_20039
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,7-_20039
+	ADD	HL,SP
+	LD	(HL),E
+	LD	HL,3-_20039
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	(HL),A
+	LD	E,A
+	LD	D,0
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	POP	HL
+	CALL	_ml
+	EX	DE,HL
+	LD	HL,5-_20039
+	ADD	HL,SP
+	LD	(HL),E
+; c; gStackPtr = (U8*)sp; return 0;
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	LD	HL,3-_20039
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20039 EQU -5
+; 
+; U8 cmd_mult_16()
+; {
+	public cmd_mult_16_
+cmd_mult_16_:
+	LD	DE,_20040
+	CALL	zsave
+; U16 a,b,c, *sp; sp = (U16*)gStackPtr; a = *(sp++); b = *(sp++); c = a * b; *(--sp)
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,0-_20040
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20040
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20040
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	LD	HL,4-_20040
+	ADD	HL,SP
+	LD	(HL),A
+	INC	HL
+	LD	(HL),D
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	CALL	_ml
+	EX	DE,HL
+	LD	HL,2-_20040
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; = c; gStackPtr = (U8*)sp; return 0;
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20040
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20040 EQU -8
+; 
+; U8 cmd_mult_32()
+; {
+	public cmd_mult_32_
+cmd_mult_32_:
+	LD	DE,_20041
+	CALL	zsave
+; U32 a,b,c, *sp; sp = (U32*)gStackPtr; a = *(sp++); b = *(sp++); c = a * b; *(--sp)
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20041
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20041
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20041
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,0-_20041
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20041
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,-4-_20041
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20041
+	ADD	HL,SP
+	CALL	_lldp
+	LD	HL,2-_20041
+	ADD	HL,SP
+	CALL	_llds
+	CALL	_lml
+	POP	HL
+	CALL	_lst
+; = c; gStackPtr = (U8*)sp; return 0;
+	LD	HL,-6-_20041
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,-2-_20041
+	ADD	HL,SP
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,-6-_20041
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20041 EQU -14
+; 
+; U8 cmd_mult_f()
+; {
+	public cmd_mult_f_
+cmd_mult_f_:
+	LD	DE,_20042
+	CALL	zsave
+; float a,b,c, *sp; sp = (float*)gStackPtr; a = *(sp++); b = *(sp++); c = a * b; *(-
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20042
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20042
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20042
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,0-_20042
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20042
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,-4-_20042
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20042
+	ADD	HL,SP
+	CALL	_fldp
+	LD	HL,2-_20042
+	ADD	HL,SP
+	CALL	_flds
+	CALL	_dml
+	POP	HL
+	CALL	_fst
+;-sp) = c; gStackPtr = (U8*)sp; return 0;
+	LD	HL,-6-_20042
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,-2-_20042
+	ADD	HL,SP
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,-6-_20042
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20042 EQU -14
+; 
+; U8 cmd_div_8()
+; {
+	public cmd_div_8_
+cmd_div_8_:
+	LD	DE,_20043
+	CALL	zsave
+; U8 a,b,c, *sp; sp = (U8*)gStackPtr; a = *(sp++); b = *(sp++); c = a / b; *(--sp) =
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,3-_20043
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,7-_20043
+	ADD	HL,SP
+	LD	(HL),E
+	LD	HL,3-_20043
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	(HL),A
+	LD	E,A
+	LD	D,0
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	POP	HL
+	CALL	_dv
+	EX	DE,HL
+	LD	HL,5-_20043
+	ADD	HL,SP
+	LD	(HL),E
+; c; gStackPtr = (U8*)sp; return 0;   
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	LD	HL,3-_20043
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; }
+_20043 EQU -5
+; 
+; U8 cmd_div_16()
+; {
+	public cmd_div_16_
+cmd_div_16_:
+	LD	DE,_20044
+	CALL	zsave
+; U16 a,b,c, *sp; sp = (U16*)gStackPtr; a = *(sp++); b = *(sp++); c = a / b; *(--sp)
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,0-_20044
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20044
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20044
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	LD	HL,4-_20044
+	ADD	HL,SP
+	LD	(HL),A
+	INC	HL
+	LD	(HL),D
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	CALL	_ud
+	EX	DE,HL
+	LD	HL,2-_20044
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; = c; gStackPtr = (U8*)sp; return 0;   
+	DEC	HL
+	LD	E,(HL)
+	PUSH	DE
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	DEC	DE
+	DEC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,0-_20044
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20044 EQU -8
+; 
+; U8 cmd_div_32()
+; {
+	public cmd_div_32_
+cmd_div_32_:
+	LD	DE,_20045
+	CALL	zsave
+; U32 a,b,c, *sp; sp = (U32*)gStackPtr; a = *(sp++); b = *(sp++); c = a / b; *(--sp)
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20045
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20045
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20045
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,0-_20045
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20045
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,-4-_20045
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20045
+	ADD	HL,SP
+	CALL	_lldp
+	LD	HL,2-_20045
+	ADD	HL,SP
+	CALL	_llds
+	CALL	_lud
+	POP	HL
+	CALL	_lst
+; = c; gStackPtr = (U8*)sp; return 0;   
+	LD	HL,-6-_20045
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,-2-_20045
+	ADD	HL,SP
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+	LD	HL,-6-_20045
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20045 EQU -14
+; 
+; U8 cmd_div_f()
+; {
+	public cmd_div_f_
+cmd_div_f_:
+	LD	DE,_20046
+	CALL	zsave
+; float a,b,c, *sp; sp = (float*)gStackPtr; a = *(sp++); b = *(sp++); c = a / b; *(-
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20046
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	LD	HL,4-_20046
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20046
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,0-_20046
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20046
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,-4-_20046
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20046
+	ADD	HL,SP
+	CALL	_fldp
+	LD	HL,2-_20046
+	ADD	HL,SP
+	CALL	_flds
+	CALL	_ddv
+	POP	HL
+	CALL	_fst
+;-sp) = c; gStackPtr = (U8*)sp; return 0;   
+	LD	HL,-6-_20046
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,-4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	PUSH	DE
+	LD	HL,-2-_20046
+	ADD	HL,SP
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+	LD	HL,-6-_20046
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+	LD	HL,0
+	RET
+; 
+; }
+_20046 EQU -14
+; 
+; U8 cmd_cmp_8()
+; {
+	public cmd_cmp_8_
+cmd_cmp_8_:
+	LD	DE,_20047
+	CALL	zsave
+; U8 a,b,c,*sp;
+; sp = (U8*)gStackPtr;
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,3-_20047
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; a = (*sp++);
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,7-_20047
+	ADD	HL,SP
+	LD	(HL),E
+; b = (*sp++);
+	LD	HL,3-_20047
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	(HL),A
+; c = a-b;
+	LD	E,A
+	LD	D,0
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	POP	HL
+	AND	A
+	EX	DE,HL
+	SBC	HL,DE
+	EX	DE,HL
+	LD	HL,5-_20047
+	ADD	HL,SP
+	LD	(HL),E
+; gFlagLess = a < b;
+	INC	HL
+	LD	E,(HL)
+	LD	D,0
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	POP	HL
+	CALL	_lt
+	LD	A,L
+	LD	(gFlagLess_),A
+; gFlagZero = a == b;
+	LD	HL,6-_20047
+	ADD	HL,SP
+	LD	E,(HL)
+	LD	D,0
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	POP	HL
+	CALL	_eq
+	LD	A,L
+	LD	(gFlagZero_),A
+; gStackPtr = (U8*)sp;
+	LD	HL,3-_20047
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;
+	LD	HL,0
+	RET
+; }
+_20047 EQU -5
+; 
+; U8 cmd_cmp_32()
+; {
+	public cmd_cmp_32_
+cmd_cmp_32_:
+	LD	DE,_20048
+	CALL	zsave
+; U32 a,b,c,*sp;
+; sp = (U32*)gStackPtr;
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20048
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; a = (*sp++);
+	LD	HL,4-_20048
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20048
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+; b = (*sp++);
+	LD	HL,0-_20048
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20048
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+; c = a-b;
+	LD	HL,-4-_20048
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20048
+	ADD	HL,SP
+	CALL	_lldp
+	LD	HL,2-_20048
+	ADD	HL,SP
+	CALL	_llds
+	CALL	_lsb
+	POP	HL
+	CALL	_lst
+; gFlagLess = a < b;
+	LD	HL,4-_20048
+	ADD	HL,SP
+	CALL	_lldp
+	LD	HL,0-_20048
+	ADD	HL,SP
+	CALL	_llds
+	CALL	_lul
+	LD	A,L
+	LD	(gFlagLess_),A
+; gFlagZero = a == b;
+	LD	HL,4-_20048
+	ADD	HL,SP
+	CALL	_lldp
+	LD	HL,0-_20048
+	ADD	HL,SP
+	CALL	_llds
+	CALL	_leq
+	LD	A,L
+	LD	(gFlagZero_),A
+; gStackPtr = (U8*)sp;
+	LD	HL,-6-_20048
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;
+	LD	HL,0
+	RET
+; }  
+_20048 EQU -14
+; 
+; U8 cmd_cmp_f()
+; {
+	public cmd_cmp_f_
+cmd_cmp_f_:
+	LD	DE,_20049
+	CALL	zsave
+; float a,b,c,*sp;
+; sp = (float*)gStackPtr;
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,-6-_20049
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; a = (*sp++);
+	LD	HL,4-_20049
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20049
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+; b = (*sp++);
+	LD	HL,0-_20049
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,-4-_20049
+	ADD	HL,SP
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+; c = a-b;
+	LD	HL,-4-_20049
+	ADD	HL,SP
+	PUSH	HL
+	LD	HL,6-_20049
+	ADD	HL,SP
+	CALL	_fldp
+	LD	HL,2-_20049
+	ADD	HL,SP
+	CALL	_flds
+	CALL	_dsb
+	POP	HL
+	CALL	_fst
+; gFlagLess = a < b;
+	LD	HL,4-_20049
+	ADD	HL,SP
+	CALL	_fldp
+	LD	HL,0-_20049
+	ADD	HL,SP
+	CALL	_flds
+	CALL	_dlt
+	LD	A,L
+	LD	(gFlagLess_),A
+; gFlagZero = a == b;
+	LD	HL,4-_20049
+	ADD	HL,SP
+	CALL	_fldp
+	LD	HL,0-_20049
+	ADD	HL,SP
+	CALL	_flds
+	CALL	_deq
+	LD	A,L
+	LD	(gFlagZero_),A
+; gStackPtr = (U8*)sp;
+	LD	HL,-6-_20049
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;
+	LD	HL,0
+	RET
+; }
+_20049 EQU -14
+; 
+; U8 cmd_cmp_16()
+; {
+	public cmd_cmp_16_
+cmd_cmp_16_:
+	LD	DE,_20050
+	CALL	zsave
+; S16 a,b,c,*sp;
+; sp = (U16*)gStackPtr;
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,0-_20050
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; a = (*sp++);
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20050
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; b = (*sp++);
+	LD	HL,0-_20050
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	A,(DE)
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	LD	HL,4-_20050
+	ADD	HL,SP
+	LD	(HL),A
+	INC	HL
+	LD	(HL),D
+; c = a-b;
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	AND	A
+	EX	DE,HL
+	SBC	HL,DE
+	EX	DE,HL
+	LD	HL,2-_20050
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; gFlagLess = a < b;
+	INC	HL
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	CALL	_lt
+	LD	A,L
+	LD	(gFlagLess_),A
+; gFlagZero = a == b;
+	LD	HL,6-_20050
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	DEC	HL
+	DEC	HL
+	DEC	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	CALL	_eq
+	LD	A,L
+	LD	(gFlagZero_),A
+; gStackPtr = (U8*)sp;
+	LD	HL,0-_20050
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; return 0;
+	LD	HL,0
+	RET
+; }
+_20050 EQU -8
+; 
+; U8 cmd_Jump()
+; {
+	public cmd_Jump_
+cmd_Jump_:
+	LD	DE,_20051
+	CALL	zsave
+; U16 x, *cp;
+; cp = (U16*)gCodePtr;
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,4-_20051
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*cp);
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,6-_20051
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; gCodePtr = x + gCodeBase;
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,(gCodeBase_)
+	ADD	HL,DE
+	LD	(gCodePtr_),HL
+; return 0;
+	LD	HL,0
+	RET
+; }
+_20051 EQU -4
+; 
+; U8 cmd_Jump_z()
+; {
+	public cmd_Jump_z_
+cmd_Jump_z_:
+	LD	DE,_20052
+	CALL	zsave
+; U16 x, *cp;
+; cp = (U16*)gCodePtr;
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,4-_20052
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*cp);
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,6-_20052
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; if (gFlagZero) 
+; gCodePtr = x + gCodeBase;
+	LD	A,(gFlagZero_)
+	OR	A
+	JR	Z,_54
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,(gCodeBase_)
+	ADD	HL,DE
+	LD	(gCodePtr_),HL
+; else
+	JP	_55
+; gCodePtr = (U8*)cp+2;
+_54:
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	INC	HL
+	INC	HL
+	LD	(gCodePtr_),HL
+; return 0;
+_55:
+	LD	HL,0
+	RET
+; }
+_20052 EQU -4
+; 
+; U8 cmd_Jump_nz()
+; {
+	public cmd_Jump_nz_
+cmd_Jump_nz_:
+	LD	DE,_20053
+	CALL	zsave
+; U16 x, *cp;
+; cp = (U16*)gCodePtr;
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,4-_20053
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*cp);
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,6-_20053
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; if (!gFlagZero) 
+; gCodePtr = x + gCodeBase;
+	LD	A,(gFlagZero_)
+	OR	A
+	JR	NZ,_57
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,(gCodeBase_)
+	ADD	HL,DE
+	LD	(gCodePtr_),HL
+; else
+	JP	_58
+; gCodePtr = (U8*)cp+2;
+_57:
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	INC	HL
+	INC	HL
+	LD	(gCodePtr_),HL
+; return 0;
+_58:
+	LD	HL,0
+	RET
+; }
+_20053 EQU -4
+; 
+; U8 cmd_Jump_gt()
+; {
+	public cmd_Jump_gt_
+cmd_Jump_gt_:
+	LD	DE,_20054
+	CALL	zsave
+; U16 x, *cp;
+; cp = (U16*)gCodePtr;
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,4-_20054
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*cp);
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,6-_20054
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; if (!gFlagLess) 
+; gCodePtr = x + gCodeBase;
+	LD	A,(gFlagLess_)
+	OR	A
+	JR	NZ,_60
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,(gCodeBase_)
+	ADD	HL,DE
+	LD	(gCodePtr_),HL
+; else
+	JP	_61
+; gCodePtr = (U8*)cp+2;
+_60:
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	INC	HL
+	INC	HL
+	LD	(gCodePtr_),HL
+; return 0;
+_61:
+	LD	HL,0
+	RET
+; }
+_20054 EQU -4
+; 
+; U8 cmd_Jump_lt()
+; {
+	public cmd_Jump_lt_
+cmd_Jump_lt_:
+	LD	DE,_20055
+	CALL	zsave
+; U16 x, *cp;
+; cp = (U16*)gCodePtr;
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,4-_20055
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*cp);
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,6-_20055
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; if (!gFlagLess) 
+; gCodePtr = x + gCodeBase;
+	LD	A,(gFlagLess_)
+	OR	A
+	JR	NZ,_63
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,(gCodeBase_)
+	ADD	HL,DE
+	LD	(gCodePtr_),HL
+; else
+	JP	_64
+; gCodePtr = (U8*)cp+2;
+_63:
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	INC	HL
+	INC	HL
+	LD	(gCodePtr_),HL
+; return 0;
+_64:
+	LD	HL,0
+	RET
+; }
+_20055 EQU -4
+; 
+; U8 cmd_Jump_ge()
+; {
+	public cmd_Jump_ge_
+cmd_Jump_ge_:
+	LD	DE,_20056
+	CALL	zsave
+; U16 x, *cp;
+; cp = (U16*)gCodePtr;
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,4-_20056
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*cp);
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,6-_20056
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; if (!gFlagLess || gFlagZero) 
+; gCodePtr = x + gCodeBase;
+	LD	A,(gFlagLess_)
+	OR	A
+	JR	Z,_20057
+	LD	A,(gFlagZero_)
+	OR	A
+	JR	Z,_66
+_20057:
+	LD	HL,6-_20056
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,(gCodeBase_)
+	ADD	HL,DE
+	LD	(gCodePtr_),HL
+; else
+	JP	_67
+; gCodePtr = (U8*)cp+2;
+_66:
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	INC	HL
+	INC	HL
+	LD	(gCodePtr_),HL
+; return 0;
+_67:
+	LD	HL,0
+	RET
+; }
+_20056 EQU -4
+; 
+; U8 cmd_Jump_le()
+; {
+	public cmd_Jump_le_
+cmd_Jump_le_:
+	LD	DE,_20058
+	CALL	zsave
+; U16 x, *cp;
+; cp = (U16*)gCodePtr;
+	LD	HL,(gCodePtr_)
+	EX	DE,HL
+	LD	HL,4-_20058
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*cp);
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,6-_20058
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; if (gFlagLess || gFlagZero) 
+; gCodePtr = x + gCodeBase;
+	LD	A,(gFlagLess_)
+	OR	A
+	JR	NZ,_20059
+	LD	A,(gFlagZero_)
+	OR	A
+	JR	Z,_69
+_20059:
+	LD	HL,6-_20058
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,(gCodeBase_)
+	ADD	HL,DE
+	LD	(gCodePtr_),HL
+; else
+	JP	_70
+; gCodePtr = (U8*)cp+2;
+_69:
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	INC	HL
+	INC	HL
+	LD	(gCodePtr_),HL
+; return 0;
+_70:
+	LD	HL,0
+	RET
+; }
+_20058 EQU -4
+; 
+; U8 cmd_Print_8()
+; {
+	public cmd_Print_8_
+cmd_Print_8_:
+	LD	DE,_20060
+	CALL	zsave
+; S8 x,*sp;					
+; sp = (S8*)gStackPtr;		
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,5-_20060
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*sp++);					
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,7-_20060
+	ADD	HL,SP
+	LD	(HL),E
+; gStackPtr = (U8*)sp;			
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	INC	HL
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; gPrintBuf[0] = ' ';
+	LD	A,32
+	LD	(gPrintBuf_),A
+; itoa(x,gPrintBuf+1, 10);		
+	LD	HL,10
+	PUSH	HL
+	LD	HL,gPrintBuf_+1
+	PUSH	HL
+	LD	H,D
+	LD	L,E
+	INC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	CALL	_ctoi
+	PUSH	HL
+	CALL	itoa_
+	POP	DE
+	POP	DE
+	POP	DE
+; it_printtxt(&gWindow,gPrintBuf);	
+	LD	HL,gPrintBuf_
+	PUSH	HL
+	LD	HL,gWindow_
+	PUSH	HL
+	CALL	it_printtxt_
+	POP	DE
+	POP	DE
+; return 0;	
+	LD	HL,0
+	RET
+; }
+_20060 EQU -3
+; 
+; U8 cmd_Print_16()
+; {
+	public cmd_Print_16_
+cmd_Print_16_:
+	LD	DE,_20061
+	CALL	zsave
+; S16 x,*sp;					
+; sp = (S16*)gStackPtr;		
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,4-_20061
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*sp++);					
+	INC	DE
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	EX	DE,HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	LD	HL,6-_20061
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; gStackPtr = (U8*)sp;			
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; gPrintBuf[0] = ' ';
+	LD	A,32
+	LD	(gPrintBuf_),A
+; itoa(x,gPrintBuf+1, 10);		
+	LD	HL,10
+	PUSH	HL
+	LD	HL,gPrintBuf_+1
+	PUSH	HL
+	EX	DE,HL
+	INC	HL
+	INC	HL
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	PUSH	DE
+	CALL	itoa_
+	POP	DE
+	POP	DE
+	POP	DE
+; it_printtxt(&gWindow,gPrintBuf);	
+	LD	HL,gPrintBuf_
+	PUSH	HL
+	LD	HL,gWindow_
+	PUSH	HL
+	CALL	it_printtxt_
+	POP	DE
+	POP	DE
+; return 0;
+	LD	HL,0
+	RET
+; }
+_20061 EQU -4
+; 
+; U8 cmd_Print_32()
+; {
+	public cmd_Print_32_
+cmd_Print_32_:
+	LD	DE,_20062
+	CALL	zsave
+; S32 x,*sp;					
+; sp = (S32*)gStackPtr;		
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,2-_20062
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*sp++);					
+	INC	HL
+	PUSH	HL
+	DEC	HL
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_lldp
+	POP	HL
+	CALL	_lst
+; gStackPtr = (U8*)sp;			
+	LD	HL,2-_20062
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; gPrintBuf[0] = ' ';
+	LD	A,32
+	LD	(gPrintBuf_),A
+; ltoa(&x,gPrintBuf+1, 10);		
+	LD	HL,10
+	PUSH	HL
+	LD	HL,gPrintBuf_+1
+	PUSH	HL
+	EX	DE,HL
+	INC	HL
+	PUSH	HL
+	CALL	ltoa_
+	POP	DE
+	POP	DE
+	POP	DE
+; it_printtxt(&gWindow,gPrintBuf);	
+	LD	HL,gPrintBuf_
+	PUSH	HL
+	LD	HL,gWindow_
+	PUSH	HL
+	CALL	it_printtxt_
+	POP	DE
+	POP	DE
+; return 0;	
+	LD	HL,0
+	RET
+; }
+_20062 EQU -6
+; 
+; U8 cmd_Print_F()
+; {
+	public cmd_Print_F_
+cmd_Print_F_:
+	LD	DE,_20063
+	CALL	zsave
+; float x,*sp;					
+; sp = (float*)gStackPtr;		
+	LD	HL,(gStackPtr_)
+	EX	DE,HL
+	LD	HL,2-_20063
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; x = (*sp++);
+	INC	HL
+	PUSH	HL
+	DEC	HL
+	DEC	HL
+	PUSH	HL
+	LD	A,(HL)
+	INC	HL
+	LD	H,(HL)
+	LD	L,A
+	LD	DE,4
+	ADD	HL,DE
+	EX	DE,HL
+	POP	HL
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+	EX	DE,HL
+	LD	DE,-4
+	ADD	HL,DE
+	CALL	_fldp
+	POP	HL
+	CALL	_fst
+; gStackPtr = (U8*)sp;			
+	LD	HL,2-_20063
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gStackPtr_),HL
+; gPrintBuf[0] = ' ';
+	LD	A,32
+	LD	(gPrintBuf_),A
+; ftoa(x,gPrintBuf+1);
+	LD	HL,gPrintBuf_+1
+	PUSH	HL
+	EX	DE,HL
+	INC	HL
+	CALL	_fldp
+	CALL	_dpsh
+	CALL	ftoa_
+	LD	HL,10
+	ADD	HL,SP
+	LD	SP,HL
+; it_printtxt(&gWindow,gPrintBuf);	
+	LD	HL,gPrintBuf_
+	PUSH	HL
+	LD	HL,gWindow_
+	PUSH	HL
+	CALL	it_printtxt_
+	POP	DE
+	POP	DE
+; return 0;	
+	LD	HL,0
+	RET
+; }
+_20063 EQU -6
+; 
+; U8 cmd_Print_NL()
+; {
+	public cmd_Print_NL_
+cmd_Print_NL_:
+; gPrintBuf[0] = '\n';
+	LD	A,10
+	LD	(gPrintBuf_),A
+; gPrintBuf[1] = 0;
+	LD	A,0
+	LD	(gPrintBuf_+1),A
+; it_printtxt(&gWindow,gPrintBuf);	
+	LD	HL,gPrintBuf_
+	PUSH	HL
+	LD	HL,gWindow_
+	PUSH	HL
+	CALL	it_printtxt_
+	POP	DE
+	POP	DE
+; return 0;	
+	LD	HL,0
+	XOR	A
+	RET
+; }
+_20064 EQU 0
+; 
+; U8 cmd_Cls()
+; {
+	public cmd_Cls_
+cmd_Cls_:
+; it_BasicSetup(&gWindow);
+	LD	HL,gWindow_
+	PUSH	HL
+	CALL	it_BasicSetup_
+	POP	DE
+; FillBlock( 0, 0, 0, 239, 160 );
+	LD	HL,160
+	PUSH	HL
+	LD	L,239
+	PUSH	HL
+	LD	L,H
+	PUSH	HL
+	PUSH	HL
+	PUSH	HL
+	CALL	FillBlock_
+	LD	HL,10
+	ADD	HL,SP
+	LD	SP,HL
+; return 0;
+	LD	HL,0
+	XOR	A
+	RET
+; }
+_20065 EQU 0
+; U8 cmd_Plot()
+; {
+	public cmd_Plot_
+cmd_Plot_:
+	LD	DE,_20066
+	CALL	zsave
+; U8 c,x,y;
+; 
+; y = *gStackPtr++;
+	LD	HL,(gStackPtr_)
+	LD	E,(HL)
+	INC	HL
+	LD	(gStackPtr_),HL
+	LD	HL,5-_20066
+	ADD	HL,SP
+	LD	(HL),E
+; x = *gStackPtr++;
+	LD	HL,(gStackPtr_)
+	LD	E,(HL)
+	INC	HL
+	LD	(gStackPtr_),HL
+	LD	HL,6-_20066
+	ADD	HL,SP
+	LD	(HL),E
+; c = *gStackPtr++;
+	LD	HL,(gStackPtr_)
+	LD	E,(HL)
+	INC	HL
+	LD	(gStackPtr_),HL
+	LD	HL,7-_20066
+	ADD	HL,SP
+	LD	(HL),E
+; 
+; WriteDot(c,x,y);
+	DEC	HL
+	DEC	HL
+	LD	E,(HL)
+	LD	D,0
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	PUSH	DE
+	INC	HL
+	LD	E,(HL)
+	PUSH	DE
+	CALL	WriteDot_
+	POP	DE
+	POP	DE
+	POP	DE
+; return 0;
+	LD	HL,0
+	RET
+; 
+; }
+_20066 EQU -3
+; 
+; void SetCmd(U16 nr, void *cmd)
+; {
+	public SetCmd_
+;VOID
+SetCmd_:
+; gCmdJumpTable[nr] = cmd;
+	LD	HL,4-_20067
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	PUSH	DE
+	DEC	HL
+	DEC	HL
+	LD	D,(HL)
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	ADD	HL,HL
+	LD	DE,gCmdJumpTable_
+	ADD	HL,DE
+	POP	DE
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; }
+	RET
+_20067 EQU 0
+; 
+; void InitVM()
+; {
+	public InitVM_
+;VOID
+InitVM_:
+	LD	DE,_20068
+	CALL	zsave
+; U16 i;
+; U8 *lbl1;
+; U8 *cp;
+; gStackPtr = gStack+1024;
+	LD	HL,gStack_+1024
+	LD	(gStackPtr_),HL
+; for (i=0;i<=255;i++)
+	LD	HL,6-_20068
+	ADD	HL,SP
+	LD	(HL),0
+	INC	HL
+	LD	(HL),0
+; {
+; gCmdJumpTable[i] = cmd_Error;
+_82:
+	LD	HL,6-_20068
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	ADD	HL,HL
+	LD	DE,gCmdJumpTable_
+	ADD	HL,DE
+	LD	DE,cmd_Error_
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; }
+_80:
+	LD	HL,6-_20068
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	INC	DE
+	LD	(HL),D
+	DEC	HL
+	LD	(HL),E
+	INC	HL
+	LD	D,(HL)
+	LD	HL,-256
+	ADD	HL,DE
+	JR	NC,_82
+; 
+; SetCmd(0x00 + 0x00 + 0x00	,cmd_Load_C8);
+_81:
+	LD	HL,cmd_Load_C8_
+	PUSH	HL
+	LD	HL,0
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x00 + 0x00 + 0x01	,cmd_Load_C16);
+	LD	HL,cmd_Load_C16_
+	PUSH	HL
+	LD	HL,1
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x00 + 0x00 + 0x02	,cmd_Load_C32);
+	LD	HL,cmd_Load_C32_
+	PUSH	HL
+	LD	HL,2
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x00 + 0x00 + 0x03	,cmd_Load_CF);
+	LD	HL,cmd_Load_CF_
+	PUSH	HL
+	LD	HL,3
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x00 + 0x04 + 0x00	,cmd_Load_V8);
+	LD	HL,cmd_Load_V8_
+	PUSH	HL
+	LD	HL,4
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x00 + 0x04 + 0x01	,cmd_Load_V16);
+	LD	HL,cmd_Load_V16_
+	PUSH	HL
+	LD	HL,5
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x00 + 0x04 + 0x02	,cmd_Load_V32);
+	LD	HL,cmd_Load_V32_
+	PUSH	HL
+	LD	HL,6
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x00 + 0x04 + 0x03	,cmd_Load_VF);
+	LD	HL,cmd_Load_VF_
+	PUSH	HL
+	LD	HL,7
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x20 + 0x04 + 0x00	,cmd_Store_V8);
+	LD	HL,cmd_Store_V8_
+	PUSH	HL
+	LD	HL,36
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x20 + 0x04 + 0x01,cmd_Store_V16);
+	LD	HL,cmd_Store_V16_
+	PUSH	HL
+	LD	HL,37
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x20 + 0x04 + 0x02,cmd_Store_V32);
+	LD	HL,cmd_Store_V32_
+	PUSH	HL
+	LD	HL,38
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x20 + 0x04 + 0x03	,cmd_Store_VF);
+	LD	HL,cmd_Store_VF_
+	PUSH	HL
+	LD	HL,39
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0xF0 + (0x00 << 2) + 0x01		,cmd_Ext_8_16);
+	LD	HL,cmd_Ext_8_16_
+	PUSH	HL
+	LD	HL,241
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x00 << 2) + 0x02		,cmd_Ext_8_32);
+	LD	HL,cmd_Ext_8_32_
+	PUSH	HL
+	LD	HL,242
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x00 << 2) + 0x03		,cmd_Ext_8_F);
+	LD	HL,cmd_Ext_8_F_
+	PUSH	HL
+	LD	HL,243
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x01 << 2) + 0x00 		,cmd_Ext_16_8);
+	LD	HL,cmd_Ext_16_8_
+	PUSH	HL
+	LD	HL,244
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x01 << 2) + 0x02		,cmd_Ext_16_32);
+	LD	HL,cmd_Ext_16_32_
+	PUSH	HL
+	LD	HL,246
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x01 << 2) + 0x03		,cmd_Ext_16_F);
+	LD	HL,cmd_Ext_16_F_
+	PUSH	HL
+	LD	HL,247
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x02 << 2) + 0x00		,cmd_Ext_32_8);
+	LD	HL,cmd_Ext_32_8_
+	PUSH	HL
+	LD	HL,248
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x02 << 2) + 0x01		,cmd_Ext_32_16);
+	LD	HL,cmd_Ext_32_16_
+	PUSH	HL
+	LD	HL,249
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x02 << 2) + 0x03		,cmd_Ext_32_F);
+	LD	HL,cmd_Ext_32_F_
+	PUSH	HL
+	LD	HL,251
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x03 << 2) + 0x00		,cmd_Ext_F_8);
+	LD	HL,cmd_Ext_F_8_
+	PUSH	HL
+	LD	HL,252
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x03 << 2) + 0x01		,cmd_Ext_F_16);
+	LD	HL,cmd_Ext_F_16_
+	PUSH	HL
+	LD	HL,253
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xF0 + (0x03 << 2) + 0x02		,cmd_Ext_F_32);
+	LD	HL,cmd_Ext_F_32_
+	PUSH	HL
+	LD	HL,254
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x40 + 0x00	,cmd_add_8);
+	LD	HL,cmd_add_8_
+	PUSH	HL
+	LD	HL,64
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x40 + 0x01	,cmd_add_16);
+	LD	HL,cmd_add_16_
+	PUSH	HL
+	LD	HL,65
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x40 + 0x02	,cmd_add_32);
+	LD	HL,cmd_add_32_
+	PUSH	HL
+	LD	HL,66
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x40 + 0x03	,cmd_add_f);
+	LD	HL,cmd_add_f_
+	PUSH	HL
+	LD	HL,67
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x44 + 0x00	,cmd_sub_8);
+	LD	HL,cmd_sub_8_
+	PUSH	HL
+	LD	HL,68
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x44 + 0x01	,cmd_sub_16);
+	LD	HL,cmd_sub_16_
+	PUSH	HL
+	LD	HL,69
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x44 + 0x02	,cmd_sub_32);
+	LD	HL,cmd_sub_32_
+	PUSH	HL
+	LD	HL,70
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x44 + 0x03	,cmd_sub_f);
+	LD	HL,cmd_sub_f_
+	PUSH	HL
+	LD	HL,71
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x48 + 0x00	,cmd_mult_8);
+	LD	HL,cmd_mult_8_
+	PUSH	HL
+	LD	HL,72
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x48 + 0x01	,cmd_mult_16);
+	LD	HL,cmd_mult_16_
+	PUSH	HL
+	LD	HL,73
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x48 + 0x02	,cmd_mult_32);
+	LD	HL,cmd_mult_32_
+	PUSH	HL
+	LD	HL,74
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x48 + 0x03	,cmd_mult_f);
+	LD	HL,cmd_mult_f_
+	PUSH	HL
+	LD	HL,75
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x4C + 0x00	,cmd_div_8);
+	LD	HL,cmd_div_8_
+	PUSH	HL
+	LD	HL,76
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x4C + 0x01	,cmd_div_16);
+	LD	HL,cmd_div_16_
+	PUSH	HL
+	LD	HL,77
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x4C + 0x02	,cmd_div_32);
+	LD	HL,cmd_div_32_
+	PUSH	HL
+	LD	HL,78
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x4C + 0x03	,cmd_div_f);
+	LD	HL,cmd_div_f_
+	PUSH	HL
+	LD	HL,79
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x50 + 0x00	,cmd_cmp_8);
+	LD	HL,cmd_cmp_8_
+	PUSH	HL
+	LD	HL,80
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x50 + 0x01	,cmd_cmp_16);
+	LD	HL,cmd_cmp_16_
+	PUSH	HL
+	LD	HL,81
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x50 + 0x02	,cmd_cmp_32);
+	LD	HL,cmd_cmp_32_
+	PUSH	HL
+	LD	HL,82
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x50 + 0x03	,cmd_cmp_f);
+	LD	HL,cmd_cmp_f_
+	PUSH	HL
+	LD	HL,83
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x84 + 0x00  ,cmd_Print_8);
+	LD	HL,cmd_Print_8_
+	PUSH	HL
+	LD	HL,132
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x84 + 0x01 ,cmd_Print_16);
+	LD	HL,cmd_Print_16_
+	PUSH	HL
+	LD	HL,133
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x84 + 0x02 ,cmd_Print_32);
+	LD	HL,cmd_Print_32_
+	PUSH	HL
+	LD	HL,134
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x84 + 0x03  ,cmd_Print_F);
+	LD	HL,cmd_Print_F_
+	PUSH	HL
+	LD	HL,135
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x88 + 2, cmd_Print_NL);
+	LD	HL,cmd_Print_NL_
+	PUSH	HL
+	LD	HL,138
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x70		,cmd_Jump	);
+	LD	HL,cmd_Jump_
+	PUSH	HL
+	LD	HL,112
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x70 + 0x01	,cmd_Jump_z);
+	LD	HL,cmd_Jump_z_
+	PUSH	HL
+	LD	HL,113
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x70 + 0x02	,cmd_Jump_nz);
+	LD	HL,cmd_Jump_nz_
+	PUSH	HL
+	LD	HL,114
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x70 + 0x05	,cmd_Jump_gt);
+	LD	HL,cmd_Jump_gt_
+	PUSH	HL
+	LD	HL,117
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x70 + 0x06	,cmd_Jump_ge);
+	LD	HL,cmd_Jump_ge_
+	PUSH	HL
+	LD	HL,118
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x70 + 0x03	,cmd_Jump_lt);
+	LD	HL,cmd_Jump_lt_
+	PUSH	HL
+	LD	HL,115
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x70 + 0x04	,cmd_Jump_le);
+	LD	HL,cmd_Jump_le_
+	PUSH	HL
+	LD	HL,116
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0x20 + 0x00,		cmd_Dup_8);
+	LD	HL,cmd_Dup_8_
+	PUSH	HL
+	LD	HL,32
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x20 + 0x01,	cmd_Dup_16);	
+	LD	HL,cmd_Dup_16_
+	PUSH	HL
+	LD	HL,33
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x20 + 0x02,	cmd_Dup_32);
+	LD	HL,cmd_Dup_32_
+	PUSH	HL
+	LD	HL,34
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x20 + 0x03,		cmd_Dup_F);  
+	LD	HL,cmd_Dup_F_
+	PUSH	HL
+	LD	HL,35
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0x63,           cmd_AddSp);
+	LD	HL,cmd_AddSp_
+	PUSH	HL
+	LD	HL,99
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; 
+; SetCmd(0xE0,			cmd_Plot);
+	LD	HL,cmd_Plot_
+	PUSH	HL
+	LD	HL,224
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; SetCmd(0xE2,				cmd_Cls);
+	LD	HL,cmd_Cls_
+	PUSH	HL
+	LD	HL,226
+	PUSH	HL
+	CALL	SetCmd_
+	POP	DE
+	POP	DE
+; }
+	RET
+_20068 EQU -6
+; 
+; void ExecuteVM(U8 *adr)
+; {
+	public ExecuteVM_
+;VOID
+ExecuteVM_:
+	LD	DE,_20069
+	CALL	zsave
+; VMCOMMAND *cmd;
+; U8         opcode;
+; 
+; gCodeBase = adr;
+	LD	HL,12-_20069
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gCodeBase_),HL
+; 
+; it_BasicSetup(&gWindow);
+	LD	HL,gWindow_
+	PUSH	HL
+	CALL	it_BasicSetup_
+	POP	DE
+; 
+; gStackPtr = &gStack[1023];
+	LD	HL,gStack_+1023
+	LD	(gStackPtr_),HL
+; 
+; gCodePtr = adr;
+	LD	HL,12-_20069
+	ADD	HL,SP
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	EX	DE,HL
+	LD	(gCodePtr_),HL
+; while (1)
+_84:
+; {
+; opcode = *gCodePtr++;
+	LD	HL,(gCodePtr_)
+	LD	E,(HL)
+	INC	HL
+	LD	(gCodePtr_),HL
+	LD	HL,5-_20069
+	ADD	HL,SP
+	LD	(HL),E
+; cmd = gCmdJumpTable[opcode];
+	LD	D,0
+	EX	DE,HL
+	ADD	HL,HL
+	LD	DE,gCmdJumpTable_
+	ADD	HL,DE
+	LD	E,(HL)
+	INC	HL
+	LD	D,(HL)
+	LD	HL,6-_20069
+	ADD	HL,SP
+	LD	(HL),E
+	INC	HL
+	LD	(HL),D
+; if (cmd() != 0) break;
+	DEC	HL
+	LD	E,(HL)
+	EX	DE,HL
+	CALL	_chl
+	JR	Z,_84
+; }
+; }
+	RET
+_20069 EQU -3
+; 
+		extern	_begin
+		extern	_chl
+		extern	_swt
+		extern	zsave
+		extern	zret
+		extern	gStack_
+		extern	gCmdJumpTable_
+		extern	WriteDot_
+		extern	FillBlock_
+		extern	it_BasicSetup_
+		extern	ftoa_
+		extern	ltoa_
+		extern	gWindow_
+		extern	it_printtxt_
+		extern	itoa_
+		extern	gPrintBuf_
+		extern	gCodeBase_
+		extern	gFlagZero_
+		extern	gFlagLess_
+		extern	gVariables_
+		extern	gCodePtr_
+		extern	gStackPtr_
+		extern	_eq
+		extern	_leq
+		extern	_deq
+		extern	_lt
+		extern	_dlt
+		extern	_lul
+		extern	_ue
+		extern	_lad
+		extern	_dad
+		extern	_sb
+		extern	_lsb
+		extern	_dsb
+		extern	_ml
+		extern	_lml
+		extern	_dml
+		extern	_dv
+		extern	_ddv
+		extern	_ud
+		extern	_lud
+		extern	_lldp
+		extern	_llds
+		extern	_llip
+		extern	_llis
+		extern	_lst
+		extern	_lpsh
+		extern	_lpop
+		extern	_lswap
+		extern	_ltst
+		extern	_itox
+		extern	_utox
+		extern	_xtoi
+		extern	_lswt
+		extern	_dldp
+		extern	_dlds
+		extern	_dlip
+		extern	_dlis
+		extern	_dst
+		extern	_dpsh
+		extern	_dpop
+		extern	_dswap
+		extern	_dtst
+		extern	_fldp
+		extern	_flds
+		extern	_fst
+		extern	_itod
+		extern	_utod
+		extern	_xtod
+		extern	_dtoi
+		extern	_dtou
+		extern	_dtox
+		extern	_ctoi
+		end

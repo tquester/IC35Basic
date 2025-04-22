@@ -1,0 +1,132 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ICBasic - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOKUME~1\ADMINI~2\LOKALE~1\Temp\RSP465.tmp" with contents
+[
+/nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Release/" /Fp"Release/ICBasic.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Ic35sdk\sources\ICBasic\ui.c"
+]
+Creating command line "cl.exe @C:\DOKUME~1\ADMINI~2\LOKALE~1\Temp\RSP465.tmp" 
+Creating temporary file "C:\DOKUME~1\ADMINI~2\LOKALE~1\Temp\RSP466.bat" with contents
+[
+@echo off
+copy c:\ic35sdk\sources\ICBasic\release\ICBasic.exe c:\ic35sdk\sources\basic
+copy C:\Ic35sdk\sources\ICBasic\Z80_Out\ICBasic.app C:\Ic35sdk\sources\BASIC\MMCard1\IC35\APP
+]
+Creating command line "C:\DOKUME~1\ADMINI~2\LOKALE~1\Temp\RSP466.bat"
+Compiling...
+ui.c
+C:\Ic35sdk\sources\ICBasic\ui.c(262) : warning C4047: 'function' : 'unsigned char *' differs in levels of indirection from 'unsigned short '
+C:\Ic35sdk\sources\ICBasic\ui.c(262) : warning C4024: 'mReadFromFile' : different types for formal and actual parameter 2
+C:\Ic35sdk\sources\ICBasic\ui.c(262) : warning C4244: 'function' : conversion from 'unsigned long ' to 'unsigned short ', possible loss of data
+C:\Ic35sdk\sources\ICBasic\ui.c(353) : warning C4244: 'return' : conversion from 'unsigned short ' to 'unsigned char ', possible loss of data
+C:\Ic35sdk\sources\ICBasic\ui.c(619) : warning C4047: '=' : 'unsigned short ' differs in levels of indirection from 'unsigned char *'
+C:\Ic35sdk\sources\ICBasic\ui.c(647) : warning C4047: 'function' : 'unsigned short ' differs in levels of indirection from 'unsigned char *'
+C:\Ic35sdk\sources\ICBasic\ui.c(647) : warning C4024: '_print2h' : different types for formal and actual parameter 1
+C:\Ic35sdk\sources\ICBasic\ui.c(648) : warning C4047: 'function' : 'unsigned short ' differs in levels of indirection from 'unsigned char *'
+C:\Ic35sdk\sources\ICBasic\ui.c(648) : warning C4024: '_print2h' : different types for formal and actual parameter 1
+C:\Ic35sdk\sources\ICBasic\ui.c(651) : warning C4047: 'function' : 'unsigned short ' differs in levels of indirection from 'unsigned char *'
+C:\Ic35sdk\sources\ICBasic\ui.c(651) : warning C4024: '_print2h' : different types for formal and actual parameter 1
+C:\Ic35sdk\sources\ICBasic\ui.c(652) : warning C4047: 'function' : 'unsigned short ' differs in levels of indirection from 'unsigned char *'
+C:\Ic35sdk\sources\ICBasic\ui.c(652) : warning C4024: '_print2h' : different types for formal and actual parameter 1
+C:\Ic35sdk\sources\ICBasic\ui.c(655) : warning C4047: 'function' : 'unsigned short ' differs in levels of indirection from 'unsigned char *'
+C:\Ic35sdk\sources\ICBasic\ui.c(655) : warning C4024: '_print2h' : different types for formal and actual parameter 1
+C:\Ic35sdk\sources\ICBasic\ui.c(656) : warning C4047: 'function' : 'unsigned short ' differs in levels of indirection from 'unsigned char *'
+C:\Ic35sdk\sources\ICBasic\ui.c(656) : warning C4024: '_print2h' : different types for formal and actual parameter 1
+C:\Ic35sdk\sources\ICBasic\ui.c(659) : warning C4047: 'function' : 'unsigned short ' differs in levels of indirection from 'unsigned char *'
+C:\Ic35sdk\sources\ICBasic\ui.c(659) : warning C4024: '_print2h' : different types for formal and actual parameter 1
+C:\Ic35sdk\sources\ICBasic\ui.c(660) : warning C4047: 'function' : 'unsigned short ' differs in levels of indirection from 'unsigned char *'
+C:\Ic35sdk\sources\ICBasic\ui.c(660) : warning C4024: '_print2h' : different types for formal and actual parameter 1
+C:\Ic35sdk\sources\ICBasic\ui.c(663) : warning C4047: 'function' : 'unsigned short ' differs in levels of indirection from 'struct tagVariable *'
+C:\Ic35sdk\sources\ICBasic\ui.c(663) : warning C4024: '_print2h' : different types for formal and actual parameter 1
+C:\Ic35sdk\sources\ICBasic\ui.c(101) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(240) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(262) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(372) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(433) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(435) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(440) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(443) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(503) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(505) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(510) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(513) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(559) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(626) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(647) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(648) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(651) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(652) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(655) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(656) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(659) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(660) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(663) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Ic35sdk\sources\ICBasic\ui.c(675) : warning C4761: integral size mismatch in argument; conversion supplied
+Creating temporary file "C:\DOKUME~1\ADMINI~2\LOKALE~1\Temp\RSP467.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/ICBasic.pdb" /machine:I386 /out:"Release/ICBasic.exe" 
+.\Release\compiler.obj
+.\Release\data.obj
+.\Release\datetime.obj
+.\Release\disass.obj
+.\Release\helptok.obj
+.\Release\iclibq.obj
+.\Release\icmemory.obj
+.\Release\icstdioi.obj
+.\Release\icstdioq.obj
+.\Release\imgdata.obj
+.\Release\main.obj
+.\Release\tokens.obj
+.\Release\ui.obj
+.\Release\uihook.obj
+.\Release\uitool.obj
+.\Release\utility.obj
+.\Release\vm.obj
+.\Release\vmapi.obj
+..\..\Lib\Ic35sdk.lib
+]
+Creating command line "link.exe @C:\DOKUME~1\ADMINI~2\LOKALE~1\Temp\RSP467.tmp"
+
+        1 Datei(en) kopiert.
+        1 Datei(en) kopiert.
+<h3>Output Window</h3>
+Linking...
+   Creating library Release/ICBasic.lib and object Release/ICBasic.exp
+Creating temporary file "C:\DOKUME~1\ADMINI~2\LOKALE~1\Temp\RSP46B.tmp" with contents
+[
+/nologo /o"Release/ICBasic.bsc" 
+.\Release\compiler.sbr
+.\Release\data.sbr
+.\Release\datetime.sbr
+.\Release\disass.sbr
+.\Release\helptok.sbr
+.\Release\iclibq.sbr
+.\Release\icmemory.sbr
+.\Release\icstdioi.sbr
+.\Release\icstdioq.sbr
+.\Release\imgdata.sbr
+.\Release\main.sbr
+.\Release\tokens.sbr
+.\Release\ui.sbr
+.\Release\uihook.sbr
+.\Release\uitool.sbr
+.\Release\utility.sbr
+.\Release\vm.sbr
+.\Release\vmapi.sbr]
+Creating command line "bscmake.exe @C:\DOKUME~1\ADMINI~2\LOKALE~1\Temp\RSP46B.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+ICBasic.exe - 0 error(s), 47 warning(s)
+</pre>
+</body>
+</html>

@@ -1,0 +1,255 @@
+00 : LOAD.b  # 0
+01 : LOAD.i  # 0
+02 : LOAD.l  # 0
+03 : LOAD.f  # 0
+04 : LOAD.b    [0]
+05 : LOAD.i    [0]
+06 : LOAD.l    [0]
+07 : LOAD.f    [0]
+08 : is free
+09 : is free
+0a : is free
+0b : is free
+0c : is free
+0d : is free
+0e : is free
+0f : is free
+10 : is free
+11 : is free
+12 : is free
+13 : is free
+14 : LOAD.b I  [0]
+15 : LOAD.i I  [0]
+16 : LOAD.l I  [0]
+17 : LOAD.f I  [0]
+18 : is free
+19 : is free
+1a : is free
+1b : is free
+1c : is free
+1d : is free
+1e : is free
+1f : is free
+20 : DUP.b        
+21 : DUP.i        
+22 : DUP.l        
+23 : DUP.f        
+24 : STORE.b   [0]
+25 : STORE.i   [0]
+26 : STORE.l   [0]
+27 : STORE.f   [0]
+28 : is free
+29 : is free
+2a : is free
+2b : is free
+2c : is free
+2d : is free
+2e : is free
+2f : is free
+30 : is free
+31 : is free
+32 : is free
+33 : is free
+34 : STORE.bI  [0]
+35 : STORE.iI  [0]
+36 : STORE.lI  [0]
+37 : STORE.fI  [0]
+38 : is free
+39 : is free
+3a : is free
+3b : is free
+3c : is free
+3d : is free
+3e : is free
+3f : is free
+40 : ADD.b        
+41 : ADD.i        
+42 : ADD.l        
+43 : ADD.f        
+44 : SUB.b        
+45 : SUB.i        
+46 : SUB.l        
+47 : SUB.f        
+48 : MULT.b       
+49 : MULT.i       
+4a : MULT.l       
+4b : MULT.f       
+4c : DIV.b        
+4d : DIV.i        
+4e : DIV.l        
+4f : DIV.f        
+50 : CMP.b        
+51 : CMP.i        
+52 : CMP.l        
+53 : CMP.f        
+54 : AND.b        
+55 : AND.i        
+56 : AND.l        
+57 : is free
+58 : OR.b         
+59 : OR.i         
+5a : OR.l         
+5b : is free
+5c : is free
+5d : is free
+5e : is free
+5f : is free
+60 : is free
+61 : is free
+62 : is free
+63 : ADDSP        
+64 : is free
+65 : is free
+66 : is free
+67 : is free
+68 : is free
+69 : is free
+6a : is free
+6b : is free
+6c : is free
+6d : is free
+6e : is free
+6f : is free
+70 : JUMP         
+71 : JUMP Z       
+72 : JUMP NZ      
+73 : JUMP LT      
+74 : JUMP LE      
+75 : JUMP GT      
+76 : JUMP GE      
+77 : is free
+78 : CALL         
+79 : is free
+7a : RTS          
+7b : is free
+7c : is free
+7d : is free
+7e : is free
+7f : is free
+80 : is free
+81 : is free
+82 : is free
+83 : is free
+84 : PRINT.b      
+85 : PRINT.i      
+86 : PRINT.l      
+87 : PRINT.f      
+88 : is free
+89 : is free
+8a : PRINT_NL     
+8b : PRINT STR    
+8c : INPUT_STR    
+8d : is free
+8e : is free
+8f : is free
+90 :              
+91 : LDSTR_""
+92 : LOADSTRV     
+93 : STORESTRV    
+94 : ADDSTR       
+95 : CMPSTR       
+96 : STORESTRVI   
+97 : LOADSTRVI    
+98 : is free
+99 : INPUT8       
+9a : INPUT16      
+9b : INPUT32      
+9c : INPUTF       
+9d : is free
+9e : is free
+9f : is free
+a0 : GETKEY       
+a1 : LEN          
+a2 : ASC          
+a3 : CHR          
+a4 : PRINT.b      
+a5 : PRINT.i      
+a6 : MID          
+a7 : PRINT.f      
+a8 : RIGHT        
+a9 : POKE         
+aa : PEEK         
+ab : IN           
+ac : PRINT.b      
+ad : is free
+ae : is free
+af : is free
+b0 : is free
+b1 : LOADF_Z      
+b2 : LOADF_NZ     
+b3 : LOADF_LT     
+b4 : LOADF_LE     
+b5 : LOADF_GT     
+b6 : LOADF_GE     
+b7 : is free
+b8 : INC.b        
+b9 : DEC.b        
+ba : is free
+bb : is free
+bc : is free
+bd : is free
+be : is free
+bf : is free
+c0 : ABS.b        
+c1 : ABS.i        
+c2 : ABS.l        
+c3 : ABS.f        
+c4 : is free
+c5 : is free
+c6 : is free
+c7 : is free
+c8 : is free
+c9 : is free
+ca : is free
+cb : is free
+cc : is free
+cd : is free
+ce : is free
+cf : is free
+d0 : is free
+d1 : is free
+d2 : is free
+d3 : is free
+d4 : is free
+d5 : is free
+d6 : is free
+d7 : is free
+d8 : is free
+d9 : is free
+da : is free
+db : is free
+dc : is free
+dd : is free
+de : is free
+df : is free
+e0 : DOT          
+e1 : LINE         
+e2 : CLS          
+e3 : GOTOXY       
+e4 : PRINT.b      
+e5 : PRINT.i      
+e6 : PRINT.l      
+e7 : PRINT.f      
+e8 : TIME         
+e9 : RAND         
+ea : RANDOMIZE    
+eb : BREAKPOINT   
+ec : PRINT.b      
+ed : is free
+ee : is free
+ef : API  FILLBLOC
+f0 : is free
+f1 : EXT.b.i      
+f2 : EXT.b.l      
+f3 : EXT.b.f      
+f4 : EXT.i.b      
+f5 : is free
+f6 : EXT.i.l      
+f7 : EXT.i.f      
+f8 : EXT.l.b      
+f9 : EXT.l.i      
+fa : is free
+fb : EXT.l.f      
+fc : EXT.f.b      
+fd : EXT.f.i      
+fe : EXT.f.l      
